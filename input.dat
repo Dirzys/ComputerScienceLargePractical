@@ -1,0 +1,9 @@
+route 1 stops 1 2 3 buses 4 capacity 50
+road 1 2 0.3
+board 0.1
+disembarks 0.1
+departs 0.1
+new passengers 0.1
+stop time 0.1
+ignore warnings
+optimise parameters

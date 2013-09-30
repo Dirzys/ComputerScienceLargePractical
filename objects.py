@@ -18,3 +18,11 @@ class Road:
         self.ends = ends
         self.rate = rate
         Road.roadCount += 1
+        
+class Passenger:
+    'Class for all passengers'
+    
+    def __init__(self, origin, destination, state):
+        self.origin = origin
+        self.destination = destination
+        self.state = state

@@ -1,4 +1,8 @@
-import objects
+import objects as new
+
+def addBusesToNetwork(busNumber, busCount, stops, state):
+    for i in range(0, int(busCount)):
+        state[2].append(new.Bus(busNumber + '.' + str(i), ('atStop', stops[i % len(stops)])))
 
 def processLine(line, state):
     data = line.split(" ")
@@ -6,32 +10,34 @@ def processLine(line, state):
     if object == "route":
         stops = []
         for i in range(3, len(data)-4):
-            stops.append(data[i])    
-        state[0].append(objects.Route(data[1], stops, data[len(data)-3], data[len(data)-1]))
+            stops.append(data[i])
+        buses = data[len(data)-3]    
+        state[0].append(new.Route(data[1], stops, buses, data[len(data)-1]))
+        addBusesToNetwork(data[1], buses, stops, state)
     if object == "road":
-        state[1].append(objects.Road(data[1], data[2], data[3]))
+        state[1].append(new.Road(data[1], data[2], data[3]))
     if object == "board":
-        state[2] = data[1]
+        state[5] = data[1]
     if object == "disembarks":
-        state[3] = data[1]
+        state[6] = data[1]
     if object == "departs":
-        state[4] = data[1]
+        state[7] = data[1]
     if object == "new":
-        state[5] = data[2]
+        state[8] = data[2]
     if object == "stop":
-        state[6] = data[2]
+        state[9] = data[2]
     if object == "ignore":
-        state[7] = True
+        state[10] = True
     if object == "optimise":
-        state[8] = True
+        state[11] = True
     return 
 
 def readFromFile(fileToRead):
     file = open(fileToRead, 'r')
     #Initialize variables
-    #order routes, roads, boardRate, disembarkRate, busDepartRate, 
+    #order routes, roads, buses, stops, passengers, boardRate, disembarkRate, busDepartRate, 
     #paxArrivalRate, stopTime, ignoreWarning, optimiseParameters
-    state = [[], [], 0, 0, 0, 0, 0, False, False]
+    state = [[], [], [], [], [], 0, 0, 0, 0, 0, False, False]
     
     for line in file:
         processLine(line, state)

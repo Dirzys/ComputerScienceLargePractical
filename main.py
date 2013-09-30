@@ -1,6 +1,6 @@
-import read_file as read
+import read_file as createNetwork
 import objects
 
-initialState = read.readFromFile('input.dat')
+initialState = createNetwork.readFromFile('input.dat')
 
 print initialState

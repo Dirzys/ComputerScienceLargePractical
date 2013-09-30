@@ -26,3 +26,10 @@ class Passenger:
         self.origin = origin
         self.destination = destination
         self.state = state
+        
+class Stop:
+    'Class for all stops'
+    
+    def __init__(self, busQueue, passengers):
+        self.busQueue = busQueue
+        self.passengers = passengers

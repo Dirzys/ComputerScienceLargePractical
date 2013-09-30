@@ -30,7 +30,8 @@ class Passenger:
 class Stop:
     'Class for all stops'
     
-    def __init__(self, busQueue, passengers):
+    def __init__(self, id, busQueue, passengers):
+        self.id = id
         self.busQueue = busQueue
         self.passengers = passengers
 

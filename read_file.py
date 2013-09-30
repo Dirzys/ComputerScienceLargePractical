@@ -1,8 +1,15 @@
 import objects as new
+from collections import deque
 
 def addBusesToNetwork(busNumber, busCount, stops, state):
     for i in range(0, int(busCount)):
         state[2].append(new.Bus(busNumber + '.' + str(i), ('atStop', stops[i % len(stops)])))
+        
+def addStopToNetwork(stopId, state):
+    for stop in state[3]:
+        if stop.id == stopId:
+            return
+    state[3].append(new.Stop(stopId, deque([]), []))
 
 def processLine(line, state):
     data = line.split(" ")
@@ -11,10 +18,13 @@ def processLine(line, state):
         stops = []
         for i in range(3, len(data)-4):
             stops.append(data[i])
+            addStopToNetwork(data[i], state)
         buses = data[len(data)-3]    
         state[0].append(new.Route(data[1], stops, buses, data[len(data)-1]))
         addBusesToNetwork(data[1], buses, stops, state)
     if object == "road":
+        addStopToNetwork(data[1], state)
+        addStopToNetwork(data[2], state)
         state[1].append(new.Road(data[1], data[2], data[3]))
     if object == "board":
         state[5] = data[1]

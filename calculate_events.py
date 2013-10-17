@@ -1,5 +1,5 @@
 import objects as new
 from collections import deque
 
-def calculateEvents(state, time):
+def calculate(state):
     return []

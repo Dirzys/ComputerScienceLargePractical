@@ -29,19 +29,19 @@ class State:
             self.stops.append(stop)
             
     def changeBoards(self, rate):
-        self.boards = rate
+        self.boards = float(rate)
             
     def changeDisembarks(self, rate):
-        self.disembarks = rate
+        self.disembarks = float(rate)
             
     def changeBusDeparts(self, rate):
-        self.busDeparts = rate
+        self.busDeparts = float(rate)
             
     def changePaxArrives(self, rate):
-        self.paxArrives = rate
+        self.paxArrives = float(rate)
             
     def changeStopTime(self, time):
-        self.stopTime = time
+        self.stopTime = float(time)
             
     def changeIgnore(self, value):
         self.ignore = value

@@ -14,38 +14,38 @@ class State:
         self.ignore = False
         self.optimise = False
         
-        def add_routes(self, routes):
-            self.routes.extend(routes)
+    def add_routes(self, routes):
+        self.routes.extend(routes)
             
-        def add_roads(self, roads):
-            self.roads.extend(roads)
+    def add_roads(self, roads):
+        self.roads.extend(roads)
             
-        def add_buses(self, buses):
-            self.buses.extend(buses)
+    def add_buses(self, buses):
+        self.buses.extend(buses)
             
-        def add_stops(self, stops):
-            self.stops.extend(stops)
+    def add_stops(self, stops):
+        self.stops.extend(stops)
             
-        def changeBoards(self, rate):
-            self.boards = rate
+    def changeBoards(self, rate):
+        self.boards = rate
             
-        def changeDisembarks(self, rate):
-            self.disembarks = rate
+    def changeDisembarks(self, rate):
+        self.disembarks = rate
             
-        def changeBusDeparts(self, rate):
-            self.busDeparts = rate
+    def changeBusDeparts(self, rate):
+        self.busDeparts = rate
             
-        def changePaxArrives(self, rate):
-            self.paxArrives = rate
+    def changePaxArrives(self, rate):
+        self.paxArrives = rate
             
-        def changeStopTime(self, time):
-            self.stopTime = time
+    def changeStopTime(self, time):
+        self.stopTime = time
             
-        def changeIgnore(self, value):
-            self.ignore = value
+    def changeIgnore(self, value):
+        self.ignore = value
             
-        def changeOptimise(self, value):
-            self.optimise = value
+    def changeOptimise(self, value):
+        self.optimise = value
 
 class Route:
     'Class for all routes'

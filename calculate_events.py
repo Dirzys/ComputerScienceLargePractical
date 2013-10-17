@@ -2,4 +2,8 @@ import objects as new
 from collections import deque
 
 def calculate(state):
-    return []
+    #Find all possible events with their rates
+    possibleEvents = {}
+    #New passenger can always arrive into the random stop with rate paxArrivalRate
+    possibleEvents[state[8]] = ['newpax']
+    return possibleEvents

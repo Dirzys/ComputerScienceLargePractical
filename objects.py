@@ -2,29 +2,31 @@ class State:
     'Class for state'
     
     def __init__(self, routes, roads, buses, stops, boards, disembarks, busDeparts, paxArrives, stopTime, ignore, optimise):
-        self.routes = []
-        self.roads = []
-        self.buses = []
-        self.stops = []
-        self.boards = 0
-        self.disembarks = 0
-        self.busDeparts = 0
-        self.paxArrives = 0
-        self.stopTime = 0
-        self.ignore = False
-        self.optimise = False
+        self.routes = routes
+        self.roads = roads
+        self.buses = buses
+        self.stops = stops
+        self.boards = boards
+        self.disembarks = disembarks
+        self.busDeparts = busDeparts
+        self.paxArrives = paxArrives
+        self.stopTime = stopTime
+        self.ignore = ignore
+        self.optimise = optimise
         
-    def add_routes(self, routes):
-        self.routes.extend(routes)
+    def add_route(self, route):
+        self.routes.append(route)
             
-    def add_roads(self, roads):
-        self.roads.extend(roads)
+    def add_road(self, road):
+        self.roads.append(road)
             
-    def add_buses(self, buses):
-        self.buses.extend(buses)
+    def add_bus(self, bus):
+        self.buses.append(bus)
             
-    def add_stops(self, stops):
-        self.stops.extend(stops)
+    def add_stop(self, stop):
+        stop = stop if not stop.id in [existingStop.id for existingStop in self.stops] else []
+        if stop != []:
+            self.stops.append(stop)
             
     def changeBoards(self, rate):
         self.boards = rate

@@ -1,3 +1,52 @@
+class State:
+    'Class for state'
+    
+    def __init__(self, routes, roads, buses, stops, boards, disembarks, busDeparts, paxArrives, stopTime, ignore, optimise):
+        self.routes = []
+        self.roads = []
+        self.buses = []
+        self.stops = []
+        self.boards = 0
+        self.disembarks = 0
+        self.busDeparts = 0
+        self.paxArrives = 0
+        self.stopTime = 0
+        self.ignore = False
+        self.optimise = False
+        
+        def add_routes(self, routes):
+            self.routes.extend(routes)
+            
+        def add_roads(self, roads):
+            self.roads.extend(roads)
+            
+        def add_buses(self, buses):
+            self.buses.extend(buses)
+            
+        def add_stops(self, stops):
+            self.stops.extend(stops)
+            
+        def changeBoards(self, rate):
+            self.boards = rate
+            
+        def changeDisembarks(self, rate):
+            self.disembarks = rate
+            
+        def changeBusDeparts(self, rate):
+            self.busDeparts = rate
+            
+        def changePaxArrives(self, rate):
+            self.paxArrives = rate
+            
+        def changeStopTime(self, time):
+            self.stopTime = time
+            
+        def changeIgnore(self, value):
+            self.ignore = value
+            
+        def changeOptimise(self, value):
+            self.optimise = value
+
 class Route:
     'Class for all routes'
     routeCount = 0

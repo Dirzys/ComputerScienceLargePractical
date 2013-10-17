@@ -33,7 +33,10 @@ class Stop:
     def __init__(self, id, busQueue, passengers):
         self.id = id
         self.busQueue = busQueue
-        self.passengers = passengers
+        self.passengers = []
+        
+    def add_passengers(self, passenger):
+        self.passengers.append(passenger)
 
 class Bus:
     'Class for all buses'

@@ -1,4 +1,4 @@
-import objects as new
+import objects 
 from collections import deque
 
 def canBoardBus(state):
@@ -21,6 +21,13 @@ def canDisembarkBus(state):
     
     return events
 
+def canComeToStop(state):
+    events = []
+    for bus in state.buses:
+        if isinstance(bus.state, objects.Road):
+            events.append((bus.state.rate, ['comes', bus]))
+    return events
+
 def calculate(state):
     #Find all possible events with their rates
     possibleEvents = []
@@ -30,4 +37,6 @@ def calculate(state):
     possibleEvents.extend(canBoardBus(state))
     #Find all passengers who can disembark some bus and add these events to possible events list
     possibleEvents.extend(canDisembarkBus(state))
+    #Find all buses that can arrive in some stop
+    possibleEvents.extend(canComeToStop(state))
     return possibleEvents

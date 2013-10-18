@@ -95,6 +95,25 @@ class TestCanComeToStop(unittest.TestCase):
         for event in results:
             self.failUnless(isinstance(event[1][1].state, new.Road), 'Returned bus ' + str(event[1][1]) + ' is not on any road')
            
+class TestCanLeaveStop(unittest.TestCase):
+
+    def runTest(self):
+        """ Test canLeaveStop function, if it returns correct results """
+        
+        paxs = [new.Passenger('1', '3', 'onBoard', '2.0'), new.Passenger('1', '3', 'onBoard', '2.0')]
+        paxs2 = [new.Passenger('2', '3', 'onBoard', '1.1'), new.Passenger('1', '2', 'onBoard', '1.1')]
+        stop = new.Stop('2', deque([]), [new.Passenger('2', '5', 'waits', ['2'])])
+        bus1 = new.Bus('2.0', stop, paxs, 2)
+        bus2 = new.Bus('1.1', stop, paxs2, 10)
+        
+        state = new.State([], [], [bus1, bus2], [stop], 0, 0, 1.0, 0, 0, False, False)
+        
+        results = calculate_events.canLeaveStop(state)
+        
+        for event in results:
+            self.failUnless(event[1][1].capacity == len(event[1][1].passengers), 'Bus ' + event[1][1].id + ' is not on capacity and should not leave the stop')
+          
+           
 def suite():
     suite = unittest.TestSuite()
     suite.addTest(ReadFileTest())
@@ -102,6 +121,7 @@ def suite():
     suite.addTest(TestCanBoardBus())
     suite.addTest(TestCanDisembarkBus())
     suite.addTest(TestCanComeToStop())
+    suite.addTest(TestCanLeaveStop())
     return suite
 
 if __name__ == '__main__':

@@ -86,7 +86,7 @@ class Stop:
     def __init__(self, id, busQueue, passengers):
         self.id = id
         self.busQueue = busQueue
-        self.passengers = []
+        self.passengers = passengers
         
     def add_passengers(self, passenger):
         self.passengers.append(passenger)

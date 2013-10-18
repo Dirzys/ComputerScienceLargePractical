@@ -3,7 +3,11 @@ from collections import deque
 
 def addBusesToNetwork(busNumber, busCount, stops, state):
     for i in range(0, int(busCount)):
-        state.add_bus(new.Bus(busNumber + '.' + str(i), ('atStop', stops[i % len(stops)]), []))
+        for stop in state.stops:
+            if stop.id == stops[i % len(stops)]:
+                addToStop = stop
+                break
+        state.add_bus(new.Bus(busNumber + '.' + str(i), addToStop, []))
         
 def addStopToNetwork(stopId, state):
     state.add_stop(new.Stop(stopId, deque([]), []))

@@ -78,12 +78,30 @@ class TestCanDisembarkBus(unittest.TestCase):
             self.failUnless(event[1][1] in event[1][2].passengers, 'Passenger ' + str(event[1][1]) + ' is not in the bus ' + str(event[1][2].id) +', hence wrong event: ')
             self.failUnless(event[1][1].destination == event[1][3].id, 'Passenger ' + str(event[1][1]) + ' want to disembark at the stop ' + str(event[1][1].destination) + ', not stop ' + str(event[1][3].id))
 
+class TestCanComeToStop(unittest.TestCase):
+
+    def runTest(self):
+        """ Test canComeToStop function, if it returns correct results """
+        
+        road1 = new.Road('1', '2', 1.0)
+        stop = new.Stop('2', deque([]), 2.0)
+        bus1 = new.Bus('2.0', road1, [])
+        bus2 = new.Bus('1.1', stop, [])
+        
+        state = new.State([], [], [bus1, bus2], [], 0, 0, 0, 0, 0, False, False)
+        
+        results = calculate_events.canComeToStop(state)
+        
+        for event in results:
+            self.failUnless(isinstance(event[1][1].state, new.Road), 'Returned bus ' + str(event[1][1]) + ' is not on any road')
+           
 def suite():
     suite = unittest.TestSuite()
     suite.addTest(ReadFileTest())
     suite.addTest(CalculateEventsTest())
     suite.addTest(TestCanBoardBus())
     suite.addTest(TestCanDisembarkBus())
+    suite.addTest(TestCanComeToStop())
     return suite
 
 if __name__ == '__main__':

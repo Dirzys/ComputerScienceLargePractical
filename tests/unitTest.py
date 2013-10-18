@@ -1,6 +1,8 @@
 import unittest
 import read_file as createNetwork
 import calculate_events
+import objects as new
+from collections import deque
 
 class ReadFileTest(unittest.TestCase):
 
@@ -34,11 +36,35 @@ class CalculateEventsTest(unittest.TestCase):
         for event in results:
             self.failUnless(isinstance(event, tuple), 'Possible events must be returned as tuples, but found: ' + str(type(event)) + ' for event ' + str(event))
 
+class TestCanBoardBus(unittest.TestCase):
+
+    def runTest(self):
+        """ Test canBoardBus function if it returns correct results """
+        
+        paxs = [new.Passenger('1', '2', 'waits', ['1', '2']), new.Passenger('1', '3', 'waits', ['2', '3'])]
+        bus1 = new.Bus('2.0', '')
+        bus2 = new.Bus('1.1', '')
+        stop = new.Stop('1', deque([bus1, bus2]), paxs)
+        paxs2 = [new.Passenger('2', '3', 'waits', ['1', '2']), new.Passenger('2', '1', 'waits', ['2', '3'])]
+        bus1b = new.Bus('1.2', '')
+        bus2b = new.Bus('2.3', '')
+        stop2 = new.Stop('2', deque([bus1b, bus2b]), paxs2)
+        
+        state = new.State([], [], [], [stop, stop2], 1.0, 0, 0, 0, 0, False, False)
+        
+        results = calculate_events.canBoardBus(state)
+        
+        print results
+        
+        for event in results:
+            self.failUnless(event[1][2].top_bus().id.split('.')[0] in event[1][1].bus, 'Bus passenger is looking for is not at the top of the queue: ' + str(event[1][2].top_bus().id))
+
 
 def suite():
     suite = unittest.TestSuite()
     suite.addTest(ReadFileTest())
     suite.addTest(CalculateEventsTest())
+    suite.addTest(TestCanBoardBus())
     return suite
 
 if __name__ == '__main__':

@@ -1,3 +1,4 @@
+
 class State:
     'Class for state'
     
@@ -88,6 +89,9 @@ class Stop:
         
     def add_passengers(self, passenger):
         self.passengers.append(passenger)
+        
+    def top_bus(self):
+        return self.busQueue[0]
 
 class Bus:
     'Class for all buses'

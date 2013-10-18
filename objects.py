@@ -74,10 +74,11 @@ class Road:
 class Passenger:
     'Class for all passengers'
     
-    def __init__(self, origin, destination, state):
+    def __init__(self, origin, destination, state, bus):
         self.origin = origin
         self.destination = destination
         self.state = state
+        self.bus = bus
         
 class Stop:
     'Class for all stops'

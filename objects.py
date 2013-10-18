@@ -97,7 +97,8 @@ class Stop:
 class Bus:
     'Class for all buses'
     
-    def __init__(self, id, state, passengers):
+    def __init__(self, id, state, passengers, capacity):
         self.id = id
         self.state = state
         self.passengers = passengers
+        self.capacity = capacity

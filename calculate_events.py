@@ -28,6 +28,29 @@ def canComeToStop(state):
             events.append((bus.state.rate, ['comes', bus]))
     return events
 
+def canLeaveStop(state):
+    
+    def noPaxToDisembark(bus):
+        busState = bus.state.id
+        for pax in bus.passengers:
+            if pax.destination == busState:
+                return False
+        return True
+    
+    def noPaxToBoard(bus):
+        for pax in bus.state.passengers:
+            if bus.id.split('.')[0] in pax.bus:
+                return False
+        return True
+    
+    busDepartsRate = state.busDeparts
+    events = []
+    for bus in state.buses:
+        if isinstance(bus.state, objects.Stop):
+            if noPaxToDisembark(bus) and (noPaxToBoard(bus) or (bus.capacity == len(bus.passengers))):
+                events.append((busDepartsRate, ['departs', bus])) 
+    return events
+
 def calculate(state):
     #Find all possible events with their rates
     possibleEvents = []
@@ -39,4 +62,6 @@ def calculate(state):
     possibleEvents.extend(canDisembarkBus(state))
     #Find all buses that can arrive in some stop
     possibleEvents.extend(canComeToStop(state))
+    #Find all buses that can leave some stop
+    possibleEvents.extend(canLeaveStop(state))
     return possibleEvents

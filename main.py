@@ -19,5 +19,5 @@ while time <= float(state.stopTime):
             chooseEvent = event[1]
             break 
     state = update.modify_state(state, chooseEvent, time)
-    time = time + float(state.stopTime) + 1
+    time = time + float(state.stopTime)
     #time = time + delay

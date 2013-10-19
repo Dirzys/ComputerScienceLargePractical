@@ -91,7 +91,7 @@ class Stop:
         self.passengers.append(passenger)
         
     def top_bus(self):
-        return self.busQueue[0]
+        return self.busQueue[0] if not len(self.busQueue) == 0 else 'None'
 
 class Bus:
     'Class for all buses'

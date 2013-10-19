@@ -18,6 +18,6 @@ while time <= float(state.stopTime):
         if event[0] == maxRate: 
             chooseEvent = event[1]
             break 
-    state = update.modify_state(state, chooseEvent)
+    state = update.modify_state(state, chooseEvent, time)
     time = time + float(state.stopTime) + 1
     #time = time + delay

@@ -32,24 +32,23 @@ def canComeToStop(state):
 
 def canLeaveStop(state):
     
-    def noPaxToDisembark(bus):
-        busState = bus.state.id
+    def noPaxToDisembark(bus, stop):
         for pax in bus.passengers:
-            if pax.destination == busState:
+            if pax.destination == stop.id:
                 return False
         return True
     
-    def noPaxToBoard(bus):
-        for pax in bus.state.passengers:
+    def noPaxToBoard(bus, stop):
+        for pax in stop.passengers:
             if bus.id.split('.')[0] in pax.bus:
                 return False
         return True
     
     busDepartsRate = state.busDeparts
     events = []
-    for bus in state.buses:
-        if isinstance(bus.state, objects.Stop):
-            if noPaxToDisembark(bus) and (noPaxToBoard(bus) or (bus.capacity == len(bus.passengers))):
+    for stop in state.stops:
+        for bus in stop.busQueue:
+            if noPaxToDisembark(bus, stop) and (noPaxToBoard(bus, stop) or (bus.capacity == len(bus.passengers))):
                 events.append((busDepartsRate, ['departs', bus])) 
     return events
 

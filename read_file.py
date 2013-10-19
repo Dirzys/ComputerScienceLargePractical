@@ -3,14 +3,20 @@ from collections import deque
 
 def addBusesToNetwork(busNumber, busCount, stops, state, capacity):
     for i in range(0, int(busCount)):
-        for stop in state.stops:
-            if stop.id == stops[i % len(stops)]:
-                addToStop = stop
-                break
-        state.add_bus(new.Bus(busNumber + '.' + str(i), addToStop, [], capacity))
+        state.add_bus(new.Bus(busNumber + '.' + str(i), stops[i % len(stops)], [], capacity))
+    return state
         
 def addStopToNetwork(stopId, state):
     state.add_stop(new.Stop(stopId, deque([]), []))
+    return state
+
+def addBusesToStops(state):
+    for stop in state.stops:
+        for bus in state.buses:
+            if bus.state == stop.id:
+                stop.add_bus(bus)
+        stop.busQueue = sorted(stop.busQueue)
+    return state
 
 def processLine(line, state):
     data = line.split(" ")
@@ -20,9 +26,9 @@ def processLine(line, state):
         for i in range(3, len(data)-4):
             stops.append(data[i])
             addStopToNetwork(data[i], state)
-        buses = data[len(data)-3]    
+        buses = data[len(data)-3] 
         state.add_route(new.Route(data[1], stops, buses, int(data[len(data)-1])))
-        addBusesToNetwork(data[1], buses, stops, state, int(data[len(data)-1]))
+        state = addBusesToNetwork(data[1], buses, stops, state, int(data[len(data)-1]))
     if object == "road":
         addStopToNetwork(data[1], state)
         addStopToNetwork(data[2], state)
@@ -53,5 +59,5 @@ def readFromFile(fileToRead):
     for line in file:
         processLine(line, state)
     
-    file.close()
-    return state
+    file.close() 
+    return addBusesToStops(state)

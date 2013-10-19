@@ -102,9 +102,9 @@ class TestCanLeaveStop(unittest.TestCase):
         
         paxs = [new.Passenger('3', 'onBoard', '2.0'), new.Passenger('3', 'onBoard', '2.0')]
         paxs2 = [new.Passenger('3', 'onBoard', '1.1'), new.Passenger('2', 'onBoard', '1.1')]
-        stop = new.Stop('2', deque([]), [new.Passenger('5', 'waits', ['2'])])
-        bus1 = new.Bus('2.0', stop, paxs, 2)
-        bus2 = new.Bus('1.1', stop, paxs2, 10)
+        bus1 = new.Bus('2.0', '2', paxs, 2)
+        bus2 = new.Bus('1.1', '2', paxs2, 10)
+        stop = new.Stop('2', deque([bus1, bus2]), [new.Passenger('5', 'waits', ['2'])])
         
         state = new.State([], [], [bus1, bus2], [stop], 0, 0, 1.0, 0, 0, False, False)
         

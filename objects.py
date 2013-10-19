@@ -54,10 +54,9 @@ class Route:
     'Class for all routes'
     routeCount = 0
     
-    def __init__(self, number, stops, buses):
+    def __init__(self, number, stops):
         self.number = number
         self.stops = stops
-        self.buses = buses
         Route.routeCount += 1
         
 class Road:

@@ -27,7 +27,7 @@ def processLine(line, state):
             stops.append(data[i])
             addStopToNetwork(data[i], state)
         buses = data[len(data)-3] 
-        state.add_route(new.Route(data[1], stops, buses))
+        state.add_route(new.Route(data[1], stops))
         state = addBusesToNetwork(data[1], buses, stops, state, int(data[len(data)-1]))
     if object == "road":
         addStopToNetwork(data[1], state)

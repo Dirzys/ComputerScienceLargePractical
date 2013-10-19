@@ -25,11 +25,24 @@ def modify_state(state, event, time):
         #Output result
         print 'A new passenger enters at stop ' + originId + ' with destination ' + destinationId +' at time ' + str(time)
     
+    def boardsBus(pax, busId, stop):
+        for possibleStop in state.stops:
+            if stop.id == possibleStop.id:
+                possibleStop.remove_passenger(pax)
+                break
+        for bus in state.buses:
+            if bus.id == busId:
+                bus.add_passenger(pax)
+                break
+        #Output result
+        print 'Passenger boards bus ' + busId + ' at stop ' + stop.id + ' with destination ' + pax.destination + ' at time ' + str(time)
+    
+        
     type = event[0]
     if type == 'newpax':
         addNewPax()
     elif type == 'boards':
-        pass
+        boardsBus(event[1], event[2], event[3])
     elif type == 'disembarks':
         pass
     elif type == 'comes':

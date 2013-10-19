@@ -57,7 +57,7 @@ class TestCanBoardBus(unittest.TestCase):
         print results
         
         for event in results:
-            self.failUnless(event[1][2].top_bus().id.split('.')[0] in event[1][1].bus, 'Bus passenger is looking for is not at the top of the queue: ' + str(event[1][2].top_bus().id))
+            self.failUnless(event[1][3].top_bus().id.split('.')[0] in event[1][1].bus, 'Bus passenger is looking for is not at the top of the queue: ' + str(event[1][3].top_bus().id))
 
 class TestCanDisembarkBus(unittest.TestCase):
 

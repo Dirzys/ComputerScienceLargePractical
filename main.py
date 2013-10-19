@@ -25,10 +25,9 @@ state = createNetwork.readFromFile('input.dat')
 time = 0
 while time <= float(state.stopTime):
     events = calculate_events.calculate(state)
-    print events
     totalRate = sum([event[0] for event in events])
     delay = -totalRate/len(events) * math.log(random())
     chooseEvent = weighted_choice(events, totalRate)
     state = update.modify_state(state, chooseEvent, time)
-    time = time + float(state.stopTime)
-    #time = time + delay
+    #time = time + float(state.stopTime)
+    time = time + delay

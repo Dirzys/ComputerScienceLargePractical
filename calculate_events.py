@@ -27,7 +27,7 @@ def canComeToStop(state):
     events = []
     for bus in state.buses:
         if isinstance(bus.state, objects.Road):
-            events.append((bus.state.rate, ['comes', bus]))
+            events.append((float(bus.state.rate), ['comes', bus]))
     return events
 
 def canLeaveStop(state):

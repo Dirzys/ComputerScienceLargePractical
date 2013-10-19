@@ -104,3 +104,6 @@ class Bus:
         self.state = state
         self.passengers = passengers
         self.capacity = capacity
+        
+    def add_passengers(self, passenger):
+        self.passengers.append(passenger)

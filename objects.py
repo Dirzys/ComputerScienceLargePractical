@@ -93,6 +93,9 @@ class Stop:
     def remove_passenger(self, passenger):
         self.passengers.remove(passenger)
         
+    def pop_bus(self, bus):
+        self.busQueue.remove(bus)
+        
     def top_bus(self):
         return self.busQueue[0] if not len(self.busQueue) == 0 else 'None'
     

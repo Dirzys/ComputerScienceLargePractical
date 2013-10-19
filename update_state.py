@@ -3,6 +3,12 @@ import objects as new
 
 def modify_state(state, event, time):
     
+    def updateBusInStop(bus):
+        for stop in state.stops:
+            if stop.id == bus.state:
+                stop.add_bus(bus)
+                break
+    
     def addNewPax():
         #Choosing random origin from all stops
         origin = choice(state.stops)
@@ -33,6 +39,7 @@ def modify_state(state, event, time):
         for bus in state.buses:
             if bus.id == busId:
                 bus.add_passenger(pax)
+                updateBusInStop(bus)
                 break
         #Output result
         print 'Passenger boards bus ' + busId + ' at stop ' + stop.id + ' with destination ' + pax.destination + ' at time ' + str(time)
@@ -41,6 +48,7 @@ def modify_state(state, event, time):
         for possibleBus in state.buses:
             if bus.id == possibleBus.id:
                 possibleBus.remove_passenger(pax)
+                updateBusInStop(possibleBus)
                 break
         #Output result
         print 'Passenger disembarks bus ' + bus.id + ' at stop ' + stop.id + ' at time ' + str(time)
@@ -50,11 +58,9 @@ def modify_state(state, event, time):
         for possibleBus in state.buses:
             if bus.id == possibleBus.id:
                 possibleBus.state = stopId
+                updatedBus = possibleBus
                 break
-        for stop in state.stops:
-            if stop.id == stopId:
-                stop.add_bus(bus)
-                break
+        updateBusInStop(updatedBus)
         #Output result
         print 'Bus ' + bus.id +' arrives at stop ' + stopId + ' at time ' + str(time)
         

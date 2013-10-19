@@ -21,7 +21,7 @@ def modify_state(state, event, time):
         #Adding new passenger into the stop with id = originId
         for stop in state.stops:
             if stop.id == originId:
-                stop.add_passengers(new.Passenger(destinationId, 'waits', buses))
+                stop.add_passengers(new.Passenger(destinationId, buses))
         #Output result
         print 'A new passenger enters at stop ' + originId + ' with destination ' + destinationId +' at time ' + str(time)
     

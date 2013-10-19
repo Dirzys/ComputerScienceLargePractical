@@ -58,6 +58,32 @@ def modify_state(state, event, time):
         #Output result
         print 'Bus ' + bus.id +' arrives at stop ' + stopId + ' at time ' + str(time)
         
+    def leavesStop(bus):
+        stopId = bus.state
+        #Find next stop
+        for route in state.routes:
+            if route.number == bus.id.split('.')[0]:
+                nextStopIndex = (route.stops.index(stopId) + 1) % len(route.stops)
+                nextStop = route.stops[nextStopIndex]
+                break
+        #Find road from this stop to the next one
+        for road in state.roads:
+            if road.starts == stopId and road.ends == nextStop:
+                chooseRoad = road
+                break
+        #Change the state of the bus
+        for possibleBus in state.buses:
+            if bus.id == possibleBus.id:
+                possibleBus.state = chooseRoad 
+                break
+        #Remove bus from stop queue 
+        for stop in state.stops:
+            if stopId == stop.id:
+                stop.pop_bus(bus)
+                
+        #Output result
+        print 'Bus ' + bus.id +' leaves stop ' + stopId + ' at time ' + str(time)
+        
     type = event[0]
     if type == 'newpax':
         addNewPax()
@@ -68,7 +94,7 @@ def modify_state(state, event, time):
     elif type == 'comes':
         arrivesAtStop(event[1])
     elif type == 'departs':
-        pass
+        leavesStop(event[1])
     else:
         raise Exception, ': incorrect event type'
     return state

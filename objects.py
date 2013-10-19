@@ -113,3 +113,6 @@ class Bus:
         
     def add_passenger(self, passenger):
         self.passengers.append(passenger)
+        
+    def remove_passenger(self, passenger):
+        self.passengers.remove(passenger)

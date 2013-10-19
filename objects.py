@@ -90,6 +90,9 @@ class Stop:
     def add_passengers(self, passenger):
         self.passengers.append(passenger)
         
+    def remove_passenger(self, passenger):
+        self.passengers.remove(passenger)
+        
     def top_bus(self):
         return self.busQueue[0] if not len(self.busQueue) == 0 else 'None'
     
@@ -105,5 +108,5 @@ class Bus:
         self.passengers = passengers
         self.capacity = capacity
         
-    def add_passengers(self, passenger):
+    def add_passenger(self, passenger):
         self.passengers.append(passenger)

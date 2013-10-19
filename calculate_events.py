@@ -5,11 +5,12 @@ def canBoardBus(state):
     boardingRate = state.boards
     events = []
     for stop in state.stops:
-        for pax in stop.passengers:
-            topBus = stop.top_bus()
-            if topBus != 'None':
-                if topBus.id.split('.')[0] in pax.bus:
-                    events.append((boardingRate, ['boards', pax, topBus.id, stop]))
+        topBus = stop.top_bus()
+        if topBus != 'None':
+            if topBus.capacity > len(topBus.passengers):
+                for pax in stop.passengers:
+                    if topBus.id.split('.')[0] in pax.bus:
+                        events.append((boardingRate, ['boards', pax, topBus.id, stop]))
     return events
 
 def canDisembarkBus(state):

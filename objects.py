@@ -2,6 +2,10 @@
 class State:
     'Class for state'
     
+    missedPaxOnStop = {}
+    missedPaxOnRoute = {}
+    missedTotal = 0
+    
     def __init__(self, routes, roads, buses, stops, boards, disembarks, busDeparts, paxArrives, stopTime, ignore, optimise):
         self.routes = routes
         self.roads = roads
@@ -49,7 +53,18 @@ class State:
             
     def changeOptimise(self, value):
         self.optimise = value
-
+    
+    def missPax(self, stopId, routeId):
+        if stopId in State.missedPaxOnStop:
+            State.missedPaxOnStop[stopId] += 1
+        else:
+            State.missedPaxOnStop[stopId] = 1
+        if routeId in State.missedPaxOnRoute:
+            State.missedPaxOnRoute[routeId] += 1
+        else:
+            State.missedPaxOnRoute[routeId] = 1
+        State.missedTotal += 1
+            
 class Route:
     'Class for all routes'
     routeCount = 0

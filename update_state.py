@@ -82,10 +82,16 @@ def modify_state(state, event, time):
             if bus.id == possibleBus.id:
                 possibleBus.state = chooseRoad 
                 break
-        #Remove bus from stop queue 
+        
         for stop in state.stops:
             if stopId == stop.id:
+                #Remove bus from stop queue 
                 stop.pop_bus(bus)
+                #Find all passengers unable to board this bus due to full capacity
+                for pax in stop.passengers:
+                    if bus.id.split('.')[0] in pax.bus:
+                        state.missPax(stopId, bus.id.split('.')[0])
+                break
                 
         #Output result
         print 'Bus ' + bus.id +' leaves stop ' + stopId + ' at time ' + str(time)

@@ -38,7 +38,7 @@ def print_stats(state):
     
     for stop in state.stops: 
         timeOfWaiting = stop.timeOfWaiting[stop.id]
-        busesWaited = stop.busesWaited[stop.id]
+        busesWaited = float(stop.busesWaited[stop.id])
         
         #Also considering buses that were waiting at the queue, but have not left the stop 
         #or arrived into top of the queue by the end of simulation

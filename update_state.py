@@ -80,7 +80,8 @@ def modify_state(state, event, time):
         #Change the state of the bus
         for possibleBus in state.buses:
             if bus.id == possibleBus.id:
-                possibleBus.state = chooseRoad 
+                possibleBus.state = chooseRoad
+                possibleBus.addJourney() 
                 break
         
         for stop in state.stops:

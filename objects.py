@@ -67,12 +67,15 @@ class State:
             
 class Route:
     'Class for all routes'
-    routeCount = 0
+    
+    numOfPaxIn = {}
+    journeysMade = {}
     
     def __init__(self, number, stops):
         self.number = number
         self.stops = stops
-        Route.routeCount += 1
+        Route.numOfPaxIn[self.number] = 0
+        Route.journeysMade[self.number] = 0
         
 class Road:
     'Class for all roads'
@@ -121,14 +124,26 @@ class Stop:
 class Bus:
     'Class for all buses'
     
+    numOfPaxIn = {}
+    journeysMade = {}
+    
     def __init__(self, id, state, passengers, capacity):
         self.id = id
         self.state = state
         self.passengers = passengers
         self.capacity = capacity
+        Bus.numOfPaxIn[self.id] = 0
+        Bus.journeysMade[self.id] = 0
         
     def add_passenger(self, passenger):
         self.passengers.append(passenger)
         
     def remove_passenger(self, passenger):
         self.passengers.remove(passenger)
+        
+    def addJourney(self):
+        Bus.numOfPaxIn[self.id] += len(self.passengers)
+        Bus.journeysMade[self.id] += 1
+        Route.numOfPaxIn[self.id.split('.')[0]] += len(self.passengers)
+        Route.journeysMade[self.id.split('.')[0]] += 1
+        

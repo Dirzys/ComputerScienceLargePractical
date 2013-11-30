@@ -4,6 +4,7 @@ import objects
 import calculate_events
 import math
 import sys
+import analysis
 from random import random, uniform, shuffle
 
 def weighted_choice(events, totalRate):
@@ -37,3 +38,5 @@ while time <= float(state.stopTime):
     state = update.modify_state(state, chooseEvent, time)
     #time = time + float(state.stopTime)
     time = time + delay
+    
+analysis.print_stats(state)

@@ -70,12 +70,17 @@ class Route:
     
     numOfPaxIn = {}
     journeysMade = {}
+    #Keeping information about how long passengers wait at route
+    timePaxWaitsOnRoute = {}
+    paxWaited = {}
     
     def __init__(self, number, stops):
         self.number = number
         self.stops = stops
         Route.numOfPaxIn[self.number] = 0
         Route.journeysMade[self.number] = 0
+        Route.timePaxWaitsOnRoute[self.number] = 0.0
+        Route.paxWaited[self.number] = 0
         
 class Road:
     'Class for all roads'
@@ -90,16 +95,21 @@ class Road:
 class Passenger:
     'Class for all passengers'
     
-    def __init__(self, destination, bus):
+    def __init__(self, destination, bus, time):
         self.destination = destination
         self.bus = bus
+        self.time = time
         
 class Stop:
     'Class for all stops'
     
+    #Keeping information about how long buses wait at queues
     timeOfWaiting = {}
     busesWaited = {}
     busArrivedOn = {}
+    #Keeping information about how long passengers wait at stops
+    timePaxWaitsOnStop = {}
+    paxWaited = {}
     
     def __init__(self, id, busQueue, passengers):
         self.id = id
@@ -107,12 +117,17 @@ class Stop:
         self.passengers = passengers
         Stop.timeOfWaiting[self.id] = 0.0
         Stop.busesWaited[self.id] = 0
+        Stop.timePaxWaitsOnStop[self.id] = 0.0
+        Stop.paxWaited[self.id] = 0
         
     def add_passengers(self, passenger):
         self.passengers.append(passenger)
         
-    def remove_passenger(self, passenger):
+    def remove_passenger(self, passenger, time):
         self.passengers.remove(passenger)
+        #Since passenger boards the bus, it means he stopped waiting
+        Stop.timePaxWaitsOnStop[self.id] += time - passenger.time
+        Stop.paxWaited[self.id] += 1
         
     def pop_bus(self, bus, time):
         # If popping top bus, the new top bus no longer considered as waiting in the queue

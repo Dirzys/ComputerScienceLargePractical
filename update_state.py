@@ -27,14 +27,14 @@ def modify_state(state, event, time):
         #Adding new passenger into the stop with id = originId
         for stop in state.stops:
             if stop.id == originId:
-                stop.add_passengers(new.Passenger(destinationId, buses))
+                stop.add_passengers(new.Passenger(destinationId, buses, time))
         #Output result
         print 'A new passenger enters at stop ' + originId + ' with destination ' + destinationId +' at time ' + str(time)
     
     def boardsBus(pax, busId, stop):
         for possibleStop in state.stops:
             if stop.id == possibleStop.id:
-                possibleStop.remove_passenger(pax)
+                possibleStop.remove_passenger(pax, time)
                 break
         for bus in state.buses:
             if bus.id == busId:

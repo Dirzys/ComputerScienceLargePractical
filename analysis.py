@@ -54,3 +54,20 @@ def print_stats(state):
         overall['busesWaited'] += busesWaited
         
     print "average queuing at all stops %0.3f" % (overall['timeOfWaiting']/overall['busesWaited']) if overall['busesWaited'] != 0 else 0
+    
+    #Average Waiting Passengers
+     
+    overall = {'timePaxWaits' : 0.0,
+               'paxWaited'   : 0
+               }       
+        
+    for stop in state.stops:
+        timePaxWaitsOnStop = stop.timePaxWaitsOnStop[stop.id]
+        paxWaited = float(stop.paxWaited[stop.id])
+        print "average waiting passengers at stop %(stop)s %(mean)0.3f" % \
+                {'stop': stop.id, 'mean': (timePaxWaitsOnStop/paxWaited) if paxWaited != 0 else 0}
+        overall['timePaxWaits'] += timePaxWaitsOnStop
+        overall['paxWaited'] += paxWaited
+        
+    print "average waiting passengers %0.3f" % (overall['timePaxWaits']/overall['paxWaited']) if overall['paxWaited'] != 0 else 0  
+               

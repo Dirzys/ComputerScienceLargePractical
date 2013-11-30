@@ -10,8 +10,8 @@ def print_stats(state):
     print "number of missed passengers %s" % state.missedTotal
     
     for bus in state.buses:
-        numJourn = bus.numOfPaxIn[bus.id]
-        numPax = float(bus.journeysMade[bus.id])
+        numPax = bus.numOfPaxIn[bus.id]
+        numJourn = float(bus.journeysMade[bus.id])
         print "average passengers bus %(bus)s %(mean)0.3f" % \
                 {'bus': bus.id, 'mean': (numPax/numJourn) if numJourn != 0 else 0}
      
@@ -20,12 +20,13 @@ def print_stats(state):
                }       
         
     for route in state.routes:
-        numJourn = route.numOfPaxIn[route.number]
-        numPax = float(route.journeysMade[route.number])
+        numPax = route.numOfPaxIn[route.number]
+        numJourn = float(route.journeysMade[route.number])
         print "average passengers route %(route)s %(mean)0.3f" % \
                 {'route': route.number, 'mean': (numPax/numJourn) if numJourn != 0 else 0}
         overall['numJourn'] += numJourn
         overall['numPax'] += numPax
         
     print "average passengers %0.3f" % (overall['numPax']/overall['numJourn']) if overall['numJourn'] != 0 else 0  
-                
+     
+        

@@ -97,10 +97,16 @@ class Passenger:
 class Stop:
     'Class for all stops'
     
+    timeOfWaiting = {}
+    busesWaited = {}
+    busArrivedOn = {}
+    
     def __init__(self, id, busQueue, passengers):
         self.id = id
         self.busQueue = busQueue
         self.passengers = passengers
+        Stop.timeOfWaiting[self.id] = 0.0
+        Stop.busesWaited[self.id] = 0
         
     def add_passengers(self, passenger):
         self.passengers.append(passenger)
@@ -108,18 +114,35 @@ class Stop:
     def remove_passenger(self, passenger):
         self.passengers.remove(passenger)
         
-    def pop_bus(self, bus):
-        self.busQueue.remove(bus)
+    def pop_bus(self, bus, time):
+        # If popping top bus, the new top bus no longer considered as waiting in the queue
+        if self.top_bus() == bus:
+            self.busQueue.remove(bus)
+            busStopsWaiting = self.top_bus()
+        # If popping not the top bus, this bus no longer considered as waiting in the queue    
+        else:
+            busStopsWaiting = bus    
+            self.busQueue.remove(bus)
+        
+        #Bus that needs to stop waiting is removed from waiting list and added into stop statistics
+        if busStopsWaiting != 'None':
+            busId = busStopsWaiting.id
+            Stop.timeOfWaiting[self.id] += time - Stop.busArrivedOn[busId]
+            Stop.busesWaited[self.id] += 1 
+            del Stop.busArrivedOn[busId]
         
     def top_bus(self):
         return self.busQueue[0] if not len(self.busQueue) == 0 else 'None'
     
-    def add_bus(self, bus):
+    def add_bus(self, bus, time):
+        #If bus have already been in the queue, just update that bus
         for existingBus in self.busQueue:
             if bus.id == existingBus.id:
                 existingBus = bus
                 return
-        self.busQueue.append(bus) 
+        #Otherwise add the bus to the queue and save the time it arrived here
+        self.busQueue.append(bus)
+        Stop.busArrivedOn[bus.id] = time 
         
 class Bus:
     'Class for all buses'

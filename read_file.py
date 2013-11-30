@@ -14,7 +14,7 @@ def addBusesToStops(state):
     for stop in state.stops:
         for bus in state.buses:
             if bus.state == stop.id:
-                stop.add_bus(bus)
+                stop.add_bus(bus, 0.0)
         stop.busQueue = sorted(stop.busQueue)
     return state
 

@@ -6,7 +6,7 @@ def modify_state(state, event, time):
     def updateBusInStop(bus):
         for stop in state.stops:
             if stop.id == bus.state:
-                stop.add_bus(bus)
+                stop.add_bus(bus, time)
                 break
     
     def addNewPax():
@@ -87,7 +87,7 @@ def modify_state(state, event, time):
         for stop in state.stops:
             if stopId == stop.id:
                 #Remove bus from stop queue 
-                stop.pop_bus(bus)
+                stop.pop_bus(bus, time)
                 #Find all passengers unable to board this bus due to full capacity
                 for pax in stop.passengers:
                     if bus.id.split('.')[0] in pax.bus:

@@ -28,5 +28,27 @@ def print_stats(state):
         overall['numPax'] += numPax
         
     print "average passengers %0.3f" % (overall['numPax']/overall['numJourn']) if overall['numJourn'] != 0 else 0  
-     
+               
+    #Average Bus Queuing Time
+    overall = {'timeOfWaiting' : 0.0,
+               'busesWaited'   : 0
+               }  
+    
+    for stop in state.stops: 
+        timeOfWaiting = stop.timeOfWaiting[stop.id]
+        busesWaited = stop.busesWaited[stop.id]
         
+        #Also considering buses that were waiting at the queue, but have not left the stop 
+        #or arrived into top of the queue by the end of simulation
+        busesArrived = stop.busArrivedOn
+        for busInQueue in stop.busQueue:
+            if busInQueue.id in busesArrived:
+                timeOfWaiting += state.stopTime - busesArrived[busInQueue.id]
+                busesWaited += 1
+                
+        print "average queuing at stop %(stop)s %(time)0.3f" % \
+                {'stop': stop.id, 'time': (timeOfWaiting/busesWaited) if busesWaited != 0 else 0}
+        overall['timeOfWaiting'] += timeOfWaiting
+        overall['busesWaited'] += busesWaited
+        
+    print "average queuing at all stops %0.3f" % (overall['timeOfWaiting']/overall['busesWaited']) if overall['busesWaited'] != 0 else 0

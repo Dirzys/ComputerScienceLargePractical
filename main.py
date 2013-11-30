@@ -3,6 +3,7 @@ import update_state as update
 import objects
 import calculate_events
 import math
+import sys
 from random import random, uniform, shuffle
 
 def weighted_choice(events, totalRate):
@@ -21,7 +22,11 @@ def weighted_choice(events, totalRate):
             return event
         upto += rate
 
-state = createNetwork.readFromFile('input.dat')
+#Getting input file name from the user command        
+if __name__ == "__main__":
+    fileToRead = sys.argv[1]
+
+state = createNetwork.readFromFile(fileToRead)
 
 time = 0
 while time <= float(state.stopTime):

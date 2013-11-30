@@ -1,6 +1,7 @@
 
 def print_stats(state):
     
+    #Number of missed passengers
     for stop in state.missedPaxOnStop:
         print "number of missed passengers stop %(stop)s %(miss)s" % \
                 {'stop': stop, 'miss': state.missedPaxOnStop[stop]}
@@ -9,6 +10,7 @@ def print_stats(state):
                 {'route': route, 'miss': state.missedPaxOnRoute[route]}
     print "number of missed passengers %s" % state.missedTotal
     
+    #Average Passengers Per Bus Per Road
     for bus in state.buses:
         numPax = bus.numOfPaxIn[bus.id]
         numJourn = float(bus.journeysMade[bus.id])

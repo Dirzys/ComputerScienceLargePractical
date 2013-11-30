@@ -13,6 +13,7 @@ def weighted_choice(events, totalRate):
     for i in indexes:
         shuffled.append(events[i])
     #Now randomly selecting from shuffled list
+    #Found this algorithm in one of the answers in Stack Overflow 
     r = uniform(0, totalRate)
     upto = 0
     for rate, event in shuffled:

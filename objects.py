@@ -99,6 +99,10 @@ class Passenger:
         self.destination = destination
         self.bus = bus
         self.time = time
+    
+    def changeTime(self, time):
+        self.time = time
+        return self
         
 class Stop:
     'Class for all stops'
@@ -176,8 +180,11 @@ class Bus:
     def add_passenger(self, passenger):
         self.passengers.append(passenger)
         
-    def remove_passenger(self, passenger):
+    def remove_passenger(self, passenger, time):
         self.passengers.remove(passenger)
+        #Since passenger disembarks the bus, it means he stopped waiting
+        Route.timePaxWaitsOnRoute[self.id.split('.')[0]] += time - passenger.time
+        Route.paxWaited[self.id.split('.')[0]] += 1
         
     def addJourney(self):
         Bus.numOfPaxIn[self.id] += len(self.passengers)

@@ -38,7 +38,7 @@ def modify_state(state, event, time):
                 break
         for bus in state.buses:
             if bus.id == busId:
-                bus.add_passenger(pax)
+                bus.add_passenger(pax.changeTime(time))
                 updateBusInStop(bus)
                 break
         #Output result
@@ -47,7 +47,7 @@ def modify_state(state, event, time):
     def disembarksBus(pax, bus, stop):
         for possibleBus in state.buses:
             if bus.id == possibleBus.id:
-                possibleBus.remove_passenger(pax)
+                possibleBus.remove_passenger(pax, time)
                 updateBusInStop(possibleBus)
                 break
         #Output result

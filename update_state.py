@@ -1,7 +1,7 @@
 from random import choice
 import objects as new
 
-def modify_state(state, event, time):
+def modify_state(state, event, time, listEvents):
     
     def updateBusInStop(bus):
         for stop in state.stops:
@@ -28,8 +28,9 @@ def modify_state(state, event, time):
         for stop in state.stops:
             if stop.id == originId:
                 stop.add_passengers(new.Passenger(destinationId, buses, time))
-        #Output result
-        print 'A new passenger enters at stop ' + originId + ' with destination ' + destinationId +' at time ' + str(time)
+        
+        if listEvents:
+            print 'A new passenger enters at stop ' + originId + ' with destination ' + destinationId +' at time ' + str(time)
     
     def boardsBus(pax, busId, stop):
         for possibleStop in state.stops:
@@ -41,8 +42,9 @@ def modify_state(state, event, time):
                 bus.add_passenger(pax.changeTime(time))
                 updateBusInStop(bus)
                 break
-        #Output result
-        print 'Passenger boards bus ' + busId + ' at stop ' + stop.id + ' with destination ' + pax.destination + ' at time ' + str(time)
+        
+        if listEvents:
+            print 'Passenger boards bus ' + busId + ' at stop ' + stop.id + ' with destination ' + pax.destination + ' at time ' + str(time)
     
     def disembarksBus(pax, bus, stop):
         for possibleBus in state.buses:
@@ -50,8 +52,9 @@ def modify_state(state, event, time):
                 possibleBus.remove_passenger(pax, time)
                 updateBusInStop(possibleBus)
                 break
-        #Output result
-        print 'Passenger disembarks bus ' + bus.id + ' at stop ' + stop.id + ' at time ' + str(time)
+        
+        if listEvents:
+            print 'Passenger disembarks bus ' + bus.id + ' at stop ' + stop.id + ' at time ' + str(time)
     
     def arrivesAtStop(bus):
         stopId = bus.state.ends
@@ -61,8 +64,9 @@ def modify_state(state, event, time):
                 updatedBus = possibleBus
                 break
         updateBusInStop(updatedBus)
-        #Output result
-        print 'Bus ' + bus.id +' arrives at stop ' + stopId + ' at time ' + str(time)
+        
+        if listEvents:
+            print 'Bus ' + bus.id +' arrives at stop ' + stopId + ' at time ' + str(time)
         
     def leavesStop(bus):
         stopId = bus.state
@@ -93,9 +97,9 @@ def modify_state(state, event, time):
                     if bus.id.split('.')[0] in pax.bus:
                         state.missPax(stopId, bus.id.split('.')[0])
                 break
-                
-        #Output result
-        print 'Bus ' + bus.id +' leaves stop ' + stopId + ' at time ' + str(time)
+            
+        if listEvents:
+            print 'Bus ' + bus.id +' leaves stop ' + stopId + ' at time ' + str(time)
         
     type = event[0]
     if type == 'newpax':

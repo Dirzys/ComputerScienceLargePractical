@@ -60,4 +60,4 @@ def readFromFile(fileToRead):
         processLine(line, state)
     
     file.close() 
-    return addBusesToStops(state)
+    return [addBusesToStops(state)]

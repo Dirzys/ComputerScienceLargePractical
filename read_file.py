@@ -26,7 +26,8 @@ def findExperiment(data, i, experiment):
         rate = data[i+1]
         for k in range(i+1, len(data)):
             experiment[len(experiment)-1].append(data(k))
-    return rate, experiment
+        return rate, experiment
+    return rate, None
 
 def parseRoute(data, state):
     experimentBuses = experimentCap = None
@@ -53,14 +54,14 @@ def parseRoute(data, state):
     #Finally add routes and buses to the network
     state.add_route(new.Route(routeNr, stops))
     state = addBusesToNetwork(routeNr, buses, stops, state, int(capacity))
-    return state, [experimentBuses, experimentCap]
+    return state, experimentBuses, experimentCap
 
 def processLine(line, state):
     data = line.split(" ")
     object = data[0]
-    experiment = None
+    experiment = experimentAddi = None
     if object == "route":
-        state, experiment = parseRoute(data, state)
+        state, experiment, experimentAddi = parseRoute(data, state)
     if object == "road":
         addStopToNetwork(data[1], state)
         addStopToNetwork(data[2], state)
@@ -84,7 +85,7 @@ def processLine(line, state):
         state.changeIgnore(True)
     if object == "optimise":
         state.changeOptimise(True)
-    return state, experiment
+    return state, experiment, experimentAddi
 
 def readFromFile(fileToRead):
     file = open(fileToRead, 'r')
@@ -92,9 +93,15 @@ def readFromFile(fileToRead):
     #order routes, roads, buses, stops, passengers, boardRate, disembarkRate, busDepartRate, 
     #paxArrivalRate, stopTime, ignoreWarning, optimiseParameters
     state = new.State([], [], [], [], 0, 0, 0, 0, 0, False, False)
+    experiments = []
     
     for line in file:
-        state, experiment = processLine(line, state)
-    
+        experiment = None
+        state, experiment, experimentAddi = processLine(line, state)
+        if experiment:
+            experiments.append(experiment)
+        if experimentAddi:
+            experiments.append(experimentAddi)
+            
     file.close() 
     return addBusesToStops(state)

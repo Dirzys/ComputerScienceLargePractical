@@ -181,6 +181,9 @@ class Bus:
     def add_passenger(self, passenger):
         self.passengers.append(passenger)
         
+    def change_capacity(self, capacity):
+        self.capacity = capacity
+        
     def remove_passenger(self, passenger, time):
         self.passengers.remove(passenger)
         #Since passenger disembarks the bus, it means he stopped waiting

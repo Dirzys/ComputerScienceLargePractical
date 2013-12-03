@@ -1,5 +1,6 @@
 import objects as new
 from collections import deque
+import itertools
 
 def addBusesToNetwork(busNumber, busCount, stops, state, capacity):
     for i in range(0, int(busCount)):
@@ -88,6 +89,43 @@ def processLine(line, state):
         state.changeOptimise(True)
     return state, experiment, experimentAddi
 
+def modifyState(state, change):
+    if change[0] == 'buses':
+        #Removing all buses from route change[1]
+        for bus in state.buses:
+            if bus.id.split('.')[0] == change[1]:
+                capacity = bus.capacity #Saving the capacity
+                state.remove_bus(bus)
+        #Finding all stops of route change[1]
+        for route in state.routes:
+            if route.number == change[1]:
+                stops = route.stops
+        #Adding new buses - there will be change[2] of them
+        state = addBusesToNetwork(change[1], change[2], stops, state, capacity)
+    if change[0] == 'capacity':
+        for bus in state.buses:
+            if bus.id.split('.')[0] == change[1]:
+                bus.change_capacity(change[2])
+    if change[0] == 'road':
+        for road in state.roads:
+            if road.starts == change[1] and road.ends == change[2]:
+                road.change_rate(change[3])
+                break
+    if change[0] == 'board':
+        state.changeBoards(change[1])
+    if change[0] == 'disembarks':
+        state.changeDisembarks(change[1])
+    if change[0] == 'departs':
+        state.changeBusDeparts(change[1])
+    if change[0] == 'new':
+        state.changePaxArrives(change[1])
+    return state
+
+def addStateForExperiment(experiment, state):
+    for change in experiment:
+        state = modifyState(state, change)
+    return state
+
 def readFromFile(fileToRead):
     file = open(fileToRead, 'r')
     #Initialize variables
@@ -103,7 +141,12 @@ def readFromFile(fileToRead):
             experiments.append(experiment)
         if experimentAddi:
             experiments.append(experimentAddi)
-    print experiments
             
     file.close() 
-    return addBusesToStops(state)
+    states = [state]
+    #Now need to get all possible variations of experiments
+    variations = list(itertools.product(*experiments))[1:] #First variation already added as a state
+    for variation in variations:
+        states.append(addStateForExperiment(variation, state))
+
+    return [addBusesToStops(state) for state in states]

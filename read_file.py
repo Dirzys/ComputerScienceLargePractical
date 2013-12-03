@@ -18,36 +18,73 @@ def addBusesToStops(state):
         stop.busQueue = sorted(stop.busQueue)
     return state
 
+def findExperiment(data, i, experiment):
+    #Find the rate if no experiment presents
+    rate = data[i]
+    #If there is an experiment - find the first possible rate and add other to experiment list
+    if rate == "experiment":
+        rate = data[i+1]
+        for k in range(i+1, len(data)):
+            experiment[len(experiment)-1].append(data(k))
+    return rate, experiment
+
+def parseRoute(data, state):
+    experimentBuses = experimentCap = None
+    routeNr = data[1]
+    stops = []
+    #Add all stops found in this route to the network
+    i = 3
+    while data[i] != "buses":
+        stops.append(data[i])
+        addStopToNetwork(data[i], state)
+        i += 1
+    #Find the number of buses if no experiment presents
+    buses = data[i+1]
+    j = i + 2 #Place where the 'capacity' should be kept if no experiment of number of buses found
+    #If there is an experiment here - find the first number of buses and add other to experiment list
+    if buses == "experiment":
+        buses = data[i+2]
+        experimentBuses = ["buses", routeNr, []]
+        while data[j] != "capacity":
+            experimentBuses[2].append(data[j])
+            j += 1
+            
+    capacity, experimentCap = findExperiment(data, j+1, ["capacity", routeNr, []]) 
+    #Finally add routes and buses to the network
+    state.add_route(new.Route(routeNr, stops))
+    state = addBusesToNetwork(routeNr, buses, stops, state, int(capacity))
+    return state, [experimentBuses, experimentCap]
+
 def processLine(line, state):
     data = line.split(" ")
     object = data[0]
+    experiment = None
     if object == "route":
-        stops = []
-        for i in range(3, len(data)-4):
-            stops.append(data[i])
-            addStopToNetwork(data[i], state)
-        buses = data[len(data)-3] 
-        state.add_route(new.Route(data[1], stops))
-        state = addBusesToNetwork(data[1], buses, stops, state, int(data[len(data)-1]))
+        state, experiment = parseRoute(data, state)
     if object == "road":
         addStopToNetwork(data[1], state)
         addStopToNetwork(data[2], state)
-        state.add_road(new.Road(data[1], data[2], data[3]))
+        rate, experiment = findExperiment(data, 3, [object, data[1], data[2], []])
+        state.add_road(new.Road(data[1], data[2], rate))
     if object == "board":
-        state.changeBoards(data[1])
+        rate, experiment = findExperiment(data, 1, [object, []])
+        state.changeBoards(rate)
     if object == "disembarks":
-        state.changeDisembarks(data[1])
+        rate, experiment = findExperiment(data, 1, [object, []])
+        state.changeDisembarks(rate)
     if object == "departs":
-        state.changeBusDeparts(data[1])
+        rate, experiment = findExperiment(data, 1, [object, []])
+        state.changeBusDeparts(rate)
     if object == "new":
-        state.changePaxArrives(data[2])
+        rate, experiment = findExperiment(data, 2, [object, []])
+        state.changePaxArrives(rate)
     if object == "stop":
         state.changeStopTime(data[2])
     if object == "ignore":
         state.changeIgnore(True)
     if object == "optimise":
         state.changeOptimise(True)
-    return 
+    return state, experiment
 
 def readFromFile(fileToRead):
     file = open(fileToRead, 'r')
@@ -57,7 +94,7 @@ def readFromFile(fileToRead):
     state = new.State([], [], [], [], 0, 0, 0, 0, 0, False, False)
     
     for line in file:
-        processLine(line, state)
+        state, experiment = processLine(line, state)
     
     file.close() 
-    return [addBusesToStops(state)]
+    return addBusesToStops(state)

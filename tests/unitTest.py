@@ -41,11 +41,11 @@ class TestCanBoardBus(unittest.TestCase):
     def runTest(self):
         """ Test canBoardBus function if it returns correct results """
         
-        paxs = [new.Passenger('2', ['1', '2']), new.Passenger('3', ['2', '3'])]
+        paxs = [new.Passenger('2', ['1', '2'], 0.1), new.Passenger('3', ['2', '3'], 0.1)]
         bus1 = new.Bus('2.0', '', [], 10)
         bus2 = new.Bus('1.1', '', [], 10)
         stop = new.Stop('1', deque([bus1, bus2]), paxs)
-        paxs2 = [new.Passenger('3', ['1', '2']), new.Passenger('1', ['2', '3'])]
+        paxs2 = [new.Passenger('3', ['1', '2'], 0.1), new.Passenger('1', ['2', '3'], 0.1)]
         bus1b = new.Bus('1.2', '', [], 10)
         bus2b = new.Bus('2.3', '', [], 10)
         stop2 = new.Stop('2', deque([bus1b, bus2b]), paxs2)
@@ -64,8 +64,8 @@ class TestCanDisembarkBus(unittest.TestCase):
     def runTest(self):
         """ Test canDisembarkBus function if it returns correct results """
         
-        paxs = [new.Passenger('2', '2.0'), new.Passenger('3', '2.0')]
-        paxs2 = [new.Passenger('3', '1.1'), new.Passenger('2', '1.1')]
+        paxs = [new.Passenger('2', '2.0', 0.1), new.Passenger('3', '2.0', 0.1)]
+        paxs2 = [new.Passenger('3', '1.1', 0.1), new.Passenger('2', '1.1', 0.1)]
         bus1 = new.Bus('2.0', '', paxs, 10)
         bus2 = new.Bus('1.1', '', paxs2, 10)
         stop = new.Stop('2', deque([bus1, bus2]), [])
@@ -100,11 +100,11 @@ class TestCanLeaveStop(unittest.TestCase):
     def runTest(self):
         """ Test canLeaveStop function, if it returns correct results """
         
-        paxs = [new.Passenger('3', '2.0'), new.Passenger('3', '2.0')]
-        paxs2 = [new.Passenger('3', '1.1'), new.Passenger('2', '1.1')]
+        paxs = [new.Passenger('3', '2.0', 0.1), new.Passenger('3', '2.0', 0.1)]
+        paxs2 = [new.Passenger('3', '1.1', 0.1), new.Passenger('2', '1.1', 0.1)]
         bus1 = new.Bus('2.0', '2', paxs, 2)
         bus2 = new.Bus('1.1', '2', paxs2, 10)
-        stop = new.Stop('2', deque([bus1, bus2]), [new.Passenger('5', ['2'])])
+        stop = new.Stop('2', deque([bus1, bus2]), [new.Passenger('5', ['2'], 0.1)])
         
         state = new.State([], [], [bus1, bus2], [stop], 0, 0, 1.0, 0, 0, False, False)
         

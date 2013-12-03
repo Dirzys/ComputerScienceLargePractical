@@ -84,13 +84,14 @@ class Route:
         
 class Road:
     'Class for all roads'
-    roadCount = 0
     
     def __init__(self, starts, ends, rate):
         self.starts = starts
         self.ends = ends
         self.rate = rate
-        Road.roadCount += 1
+        
+    def change_rate(self, rate):
+        self.rate = rate
         
 class Passenger:
     'Class for all passengers'

@@ -27,6 +27,9 @@ class State:
             
     def add_bus(self, bus):
         self.buses.append(bus)
+        
+    def remove_bus(self, bus):
+        self.buses.remove(bus)
             
     def add_stop(self, stop):
         stop = stop if not stop.id in [existingStop.id for existingStop in self.stops] else []

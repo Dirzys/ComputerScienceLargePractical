@@ -18,16 +18,17 @@ def addBusesToStops(state):
         stop.busQueue = sorted(stop.busQueue)
     return state
 
-def findExperiment(data, i, experiment):
+def findExperiment(data, i, model):
+    experiment = None
     #Find the rate if no experiment presents
     rate = data[i]
     #If there is an experiment - find the first possible rate and add other to experiment list
     if rate == "experiment":
+        experiment = []
         rate = data[i+1]
         for k in range(i+1, len(data)):
-            experiment[len(experiment)-1].append(data(k))
-        return rate, experiment
-    return rate, None
+            experiment.append(model + [data[k]])
+    return rate, experiment
 
 def parseRoute(data, state):
     experimentBuses = experimentCap = None
@@ -44,13 +45,13 @@ def parseRoute(data, state):
     j = i + 2 #Place where the 'capacity' should be kept if no experiment of number of buses found
     #If there is an experiment here - find the first number of buses and add other to experiment list
     if buses == "experiment":
+        experimentBuses = []
         buses = data[i+2]
-        experimentBuses = ["buses", routeNr, []]
         while data[j] != "capacity":
-            experimentBuses[2].append(data[j])
+            experimentBuses.append(["buses", routeNr, data[j]])
             j += 1
             
-    capacity, experimentCap = findExperiment(data, j+1, ["capacity", routeNr, []]) 
+    capacity, experimentCap = findExperiment(data, j+1, ["capacity", routeNr]) 
     #Finally add routes and buses to the network
     state.add_route(new.Route(routeNr, stops))
     state = addBusesToNetwork(routeNr, buses, stops, state, int(capacity))
@@ -65,19 +66,19 @@ def processLine(line, state):
     if object == "road":
         addStopToNetwork(data[1], state)
         addStopToNetwork(data[2], state)
-        rate, experiment = findExperiment(data, 3, [object, data[1], data[2], []])
+        rate, experiment = findExperiment(data, 3, [object, data[1], data[2]])
         state.add_road(new.Road(data[1], data[2], rate))
     if object == "board":
-        rate, experiment = findExperiment(data, 1, [object, []])
+        rate, experiment = findExperiment(data, 1, [object])
         state.changeBoards(rate)
     if object == "disembarks":
-        rate, experiment = findExperiment(data, 1, [object, []])
+        rate, experiment = findExperiment(data, 1, [object])
         state.changeDisembarks(rate)
     if object == "departs":
-        rate, experiment = findExperiment(data, 1, [object, []])
+        rate, experiment = findExperiment(data, 1, [object])
         state.changeBusDeparts(rate)
     if object == "new":
-        rate, experiment = findExperiment(data, 2, [object, []])
+        rate, experiment = findExperiment(data, 2, [object])
         state.changePaxArrives(rate)
     if object == "stop":
         state.changeStopTime(data[2])
@@ -102,6 +103,7 @@ def readFromFile(fileToRead):
             experiments.append(experiment)
         if experimentAddi:
             experiments.append(experimentAddi)
+    print experiments
             
     file.close() 
     return addBusesToStops(state)

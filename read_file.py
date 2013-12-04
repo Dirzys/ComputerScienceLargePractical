@@ -50,7 +50,7 @@ def parseRoute(data, state):
         experimentBuses = []
         buses = data[i+2]
         while data[j] != "capacity":
-            experimentBuses.append(["buses", routeNr, data[j]])
+            experimentBuses.append(["buses", routeNr, int(data[j])])
             j += 1
             
     capacity, experimentCap = findExperiment(data, j+1, ["capacity", routeNr]) 

@@ -33,6 +33,12 @@ def printExperiment(experiment):
             line += " %s" % data
         print line 
         
+def costFunction(missed, experiment):
+    totalChange = 0.0
+    for change in experiment:
+        totalChange += change[len(change)-1]
+    return totalChange * missed
+        
 def simulate(state, listEvents):
     time = 0
     resetAllGlobalParams()
@@ -54,8 +60,18 @@ if __name__ == "__main__":
 states = createNetwork.readFromFile(fileToRead)
 
 if len(states) > 1:
+    costs = []
     for state, vari in states:
         printExperiment(vari)
         simulate(state, False)
+        costs.append((costFunction(state.missedTotal, vari), vari))
+        
+    #Find experiment that has minimum cost
+    optimised =  min(costs, key=lambda item:item[0])[1]
+    print "Optimised parameters:"
+    printExperiment(optimised)
 else:
-    simulate(states[0][0], True)
+    if not states[0][0].optimise:
+        simulate(states[0][0], True)
+    else:
+        print "Error: Cannot optimise parameters when there are no experiment present"

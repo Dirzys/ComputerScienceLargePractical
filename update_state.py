@@ -73,6 +73,7 @@ def modify_state(state, event, time, listEvents):
         #Find next stop
         for route in state.routes:
             if route.number == bus.id.split('.')[0]:
+                chooseRoute = route
                 nextStopIndex = (route.stops.index(stopId) + 1) % len(route.stops)
                 nextStop = route.stops[nextStopIndex]
                 break
@@ -85,7 +86,7 @@ def modify_state(state, event, time, listEvents):
         for possibleBus in state.buses:
             if bus.id == possibleBus.id:
                 possibleBus.state = chooseRoad
-                possibleBus.addJourney() 
+                possibleBus.addJourney(chooseRoute) 
                 break
         
         for stop in state.stops:

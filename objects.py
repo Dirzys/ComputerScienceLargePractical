@@ -71,8 +71,6 @@ class State:
 class Route:
     'Class for all routes'
     
-    numOfPaxIn = {}
-    journeysMade = {}
     #Keeping information about how long passengers wait at route
     timePaxWaitsOnRoute = {}
     paxWaited = {}
@@ -80,8 +78,8 @@ class Route:
     def __init__(self, number, stops):
         self.number = number
         self.stops = stops
-        Route.numOfPaxIn[self.number] = 0
-        Route.journeysMade[self.number] = 0
+        self.numOfPaxIn = 0
+        self.journeysMade = 0
         Route.timePaxWaitsOnRoute[self.number] = 0.0
         Route.paxWaited[self.number] = 0
         
@@ -170,16 +168,13 @@ class Stop:
 class Bus:
     'Class for all buses'
     
-    numOfPaxIn = {}
-    journeysMade = {}
-    
     def __init__(self, id, state, passengers, capacity):
         self.id = id
         self.state = state
         self.passengers = passengers
         self.capacity = capacity
-        Bus.numOfPaxIn[self.id] = 0
-        Bus.journeysMade[self.id] = 0
+        self.numOfPaxIn = 0
+        self.journeysMade = 0
         
     def add_passenger(self, passenger):
         self.passengers.append(passenger)
@@ -193,9 +188,9 @@ class Bus:
         Route.timePaxWaitsOnRoute[self.id.split('.')[0]] += time - passenger.time
         Route.paxWaited[self.id.split('.')[0]] += 1
         
-    def addJourney(self):
-        Bus.numOfPaxIn[self.id] += len(self.passengers)
-        Bus.journeysMade[self.id] += 1
-        Route.numOfPaxIn[self.id.split('.')[0]] += len(self.passengers)
-        Route.journeysMade[self.id.split('.')[0]] += 1
+    def addJourney(self, route):
+        self.numOfPaxIn += len(self.passengers)
+        self.journeysMade += 1
+        route.numOfPaxIn += len(self.passengers)
+        route.journeysMade += 1
         

@@ -1,6 +1,7 @@
 import objects as new
 from collections import deque
 import itertools
+from copy import deepcopy
 
 def addBusesToNetwork(busNumber, busCount, stops, state, capacity):
     for i in range(0, int(busCount)):
@@ -147,6 +148,6 @@ def readFromFile(fileToRead):
     #Now need to get all possible variations of experiments
     variations = list(itertools.product(*experiments))[1:] #First variation already added as a state
     for variation in variations:
-        states.append(addStateForExperiment(variation, state))
+        states.append(addStateForExperiment(variation, deepcopy(state)))
 
     return [addBusesToStops(state) for state in states]

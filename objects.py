@@ -106,9 +106,6 @@ class Passenger:
 class Stop:
     'Class for all stops'
     
-    #Keeping information about how long buses wait at queues
-    busArrivedOn = {}
-    
     def __init__(self, id, busQueue, passengers):
         self.id = id
         self.busQueue = busQueue
@@ -116,6 +113,7 @@ class Stop:
         #Keeping information about how long buses wait at queues
         self.timeOfWaiting = 0.0
         self.busesWaited = 0
+        self.busArrivedOn = {}
         #Keeping information about how long passengers wait at stops
         self.timePaxWaitsOnStop = 0.0
         self.paxWaited = 0
@@ -142,9 +140,9 @@ class Stop:
         #Bus that needs to stop waiting is removed from waiting list and added into stop statistics
         if busStopsWaiting != 'None':
             busId = busStopsWaiting.id
-            self.timeOfWaiting += time - Stop.busArrivedOn[busId]
+            self.timeOfWaiting += time - self.busArrivedOn[busId]
             self.busesWaited += 1 
-            del Stop.busArrivedOn[busId]
+            del self.busArrivedOn[busId]
         
     def top_bus(self):
         return self.busQueue[0] if not len(self.busQueue) == 0 else 'None'
@@ -157,7 +155,7 @@ class Stop:
                 return
         #Otherwise add the bus to the queue and save the time it arrived here
         self.busQueue.append(bus)
-        Stop.busArrivedOn[bus.id] = time 
+        self.busArrivedOn[bus.id] = time 
         
 class Bus:
     'Class for all buses'

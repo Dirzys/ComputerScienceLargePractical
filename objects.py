@@ -71,17 +71,14 @@ class State:
 class Route:
     'Class for all routes'
     
-    #Keeping information about how long passengers wait at route
-    timePaxWaitsOnRoute = {}
-    paxWaited = {}
-    
     def __init__(self, number, stops):
         self.number = number
         self.stops = stops
         self.numOfPaxIn = 0
         self.journeysMade = 0
-        Route.timePaxWaitsOnRoute[self.number] = 0.0
-        Route.paxWaited[self.number] = 0
+        #Keeping information about how long passengers wait at route
+        self.timePaxWaitsOnRoute = 0.0
+        self.paxWaited = 0
         
 class Road:
     'Class for all roads'
@@ -111,9 +108,6 @@ class Stop:
     
     #Keeping information about how long buses wait at queues
     busArrivedOn = {}
-    #Keeping information about how long passengers wait at stops
-    timePaxWaitsOnStop = {}
-    paxWaited = {}
     
     def __init__(self, id, busQueue, passengers):
         self.id = id
@@ -122,8 +116,9 @@ class Stop:
         #Keeping information about how long buses wait at queues
         self.timeOfWaiting = 0.0
         self.busesWaited = 0
-        Stop.timePaxWaitsOnStop[self.id] = 0.0
-        Stop.paxWaited[self.id] = 0
+        #Keeping information about how long passengers wait at stops
+        self.timePaxWaitsOnStop = 0.0
+        self.paxWaited = 0
         
     def add_passengers(self, passenger):
         self.passengers.append(passenger)
@@ -131,8 +126,8 @@ class Stop:
     def remove_passenger(self, passenger, time):
         self.passengers.remove(passenger)
         #Since passenger boards the bus, it means he stopped waiting
-        Stop.timePaxWaitsOnStop[self.id] += time - passenger.time
-        Stop.paxWaited[self.id] += 1
+        self.timePaxWaitsOnStop += time - passenger.time
+        self.paxWaited += 1
         
     def pop_bus(self, bus, time):
         # If popping top bus, the new top bus no longer considered as waiting in the queue
@@ -181,11 +176,11 @@ class Bus:
     def change_capacity(self, capacity):
         self.capacity = capacity
         
-    def remove_passenger(self, passenger, time):
+    def remove_passenger(self, passenger, time, route):
         self.passengers.remove(passenger)
         #Since passenger disembarks the bus, it means he stopped waiting
-        Route.timePaxWaitsOnRoute[self.id.split('.')[0]] += time - passenger.time
-        Route.paxWaited[self.id.split('.')[0]] += 1
+        route.timePaxWaitsOnRoute += time - passenger.time
+        route.paxWaited += 1
         
     def addJourney(self, route):
         self.numOfPaxIn += len(self.passengers)

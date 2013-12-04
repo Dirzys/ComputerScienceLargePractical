@@ -47,9 +47,13 @@ def modify_state(state, event, time, listEvents):
             print 'Passenger boards bus ' + busId + ' at stop ' + stop.id + ' with destination ' + pax.destination + ' at time ' + str(time)
     
     def disembarksBus(pax, bus, stop):
+        #Find route object for this bus
+        for route in state.routes:
+            if route.number == bus.id.split('.')[0]:
+                chooseRoute = route
         for possibleBus in state.buses:
             if bus.id == possibleBus.id:
-                possibleBus.remove_passenger(pax, time)
+                possibleBus.remove_passenger(pax, time, chooseRoute)
                 updateBusInStop(possibleBus)
                 break
         

@@ -62,16 +62,16 @@ def print_stats(state):
                }       
         
     for stop in state.stops:
-        timePaxWaitsOnStop = stop.timePaxWaitsOnStop[stop.id]
-        paxWaited = float(stop.paxWaited[stop.id])
+        timePaxWaitsOnStop = stop.timePaxWaitsOnStop
+        paxWaited = float(stop.paxWaited)
         print "average waiting passengers at stop %(stop)s %(mean)0.3f" % \
                 {'stop': stop.id, 'mean': (timePaxWaitsOnStop/paxWaited) if paxWaited != 0 else 0}
         overall['timePaxWaits'] += timePaxWaitsOnStop
         overall['paxWaited'] += paxWaited
         
     for route in state.routes:
-        timePaxWaitsOnRoute = route.timePaxWaitsOnRoute[route.number]
-        paxWaited = float(route.paxWaited[route.number])
+        timePaxWaitsOnRoute = route.timePaxWaitsOnRoute
+        paxWaited = float(route.paxWaited)
         print "average waiting passengers on route %(route)s %(mean)0.3f" % \
                 {'route': route.number, 'mean': (timePaxWaitsOnRoute/paxWaited) if paxWaited != 0 else 0}
         overall['timePaxWaits'] += timePaxWaitsOnRoute

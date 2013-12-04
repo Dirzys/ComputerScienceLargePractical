@@ -23,8 +23,19 @@ def weighted_choice(events, totalRate):
             return event
         upto += rate
         
+def resetAllGlobalParams():
+    objects.resetGlobal()
+    
+def printExperiment(experiment):
+    for change in experiment:
+        line = change[0]
+        for data in change[1:]:
+            line += " %s" % data
+        print line 
+        
 def simulate(state, listEvents):
     time = 0
+    resetAllGlobalParams()
     while time <= float(state.stopTime):
         events = calculate_events.calculate(state)
         totalRate = sum([event[0] for event in events])
@@ -43,9 +54,8 @@ if __name__ == "__main__":
 states = createNetwork.readFromFile(fileToRead)
 
 if len(states) > 1:
-    for state in states:
+    for state, vari in states:
+        printExperiment(vari)
         simulate(state, False)
 else:
-    simulate(states[0], True)
-
-
+    simulate(states[0][0], True)

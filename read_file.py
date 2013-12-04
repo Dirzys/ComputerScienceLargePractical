@@ -29,7 +29,7 @@ def findExperiment(data, i, model):
         experiment = []
         rate = data[i+1]
         for k in range(i+1, len(data)):
-            experiment.append(model + [data[k]])
+            experiment.append(model + [float(data[k])])
     return rate, experiment
 
 def parseRoute(data, state):
@@ -80,7 +80,7 @@ def processLine(line, state):
         rate, experiment = findExperiment(data, 1, [object])
         state.changeBusDeparts(rate)
     if object == "new":
-        rate, experiment = findExperiment(data, 2, [object])
+        rate, experiment = findExperiment(data, 2, [object + " passengers"])
         state.changePaxArrives(rate)
     if object == "stop":
         state.changeStopTime(data[2])
@@ -118,7 +118,7 @@ def modifyState(state, change):
         state.changeDisembarks(change[1])
     if change[0] == 'departs':
         state.changeBusDeparts(change[1])
-    if change[0] == 'new':
+    if change[0] == 'new passengers':
         state.changePaxArrives(change[1])
     return state
 
@@ -146,8 +146,9 @@ def readFromFile(fileToRead):
     file.close() 
     states = [state]
     #Now need to get all possible variations of experiments
-    variations = list(itertools.product(*experiments))[1:] #First variation already added as a state
-    for variation in variations:
-        states.append(addStateForExperiment(variation, deepcopy(state)))
+    variations = list(itertools.product(*experiments))
+    states = [(state, variations[0])]
+    for variation in variations[1:]: #First variation already added as a state
+        states.append((addStateForExperiment(variation, deepcopy(state)), variation))
 
-    return [addBusesToStops(state) for state in states]
+    return [(addBusesToStops(state), vari) for state, vari in states]

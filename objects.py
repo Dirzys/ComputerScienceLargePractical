@@ -186,3 +186,8 @@ class Bus:
         route.numOfPaxIn += len(self.passengers)
         route.journeysMade += 1
         
+def resetGlobal():
+    ''' Reseting global state parameters when new simulation is ran'''
+    State.missedPaxOnStop = {}
+    State.missedPaxOnRoute = {}
+    State.missedTotal = 0

@@ -1,10 +1,9 @@
-import read_file as createNetwork
-import update_state as update
-import objects
-import calculate_events
+from read_file import readFromFile
+from update_state import modify_state
+from objects import resetGlobal
+from calculate_events import calculate
 import math
-import sys
-import analysis
+from analysis import print_stats
 from random import random, uniform, shuffle
 
 def weighted_choice(events, totalRate):
@@ -22,9 +21,6 @@ def weighted_choice(events, totalRate):
         if upto + rate > r:
             return event
         upto += rate
-        
-def resetAllGlobalParams():
-    objects.resetGlobal()
     
 def printExperiment(experiment):
     for change in experiment:
@@ -41,23 +37,24 @@ def costFunction(missed, experiment):
         
 def simulate(state, listEvents):
     time = 0
-    resetAllGlobalParams()
+    resetGlobal()
     while time <= float(state.stopTime):
-        events = calculate_events.calculate(state)
+        events = calculate(state)
         totalRate = sum([event[0] for event in events])
         delay = -totalRate/len(events) * math.log(random())
         chooseEvent = weighted_choice(events, totalRate)
-        state = update.modify_state(state, chooseEvent, time, listEvents)
+        state = modify_state(state, chooseEvent, time, listEvents)
         #time = time + float(state.stopTime)
         time = time + delay
     
-    analysis.print_stats(state)
+    print_stats(state)
 
 #Getting input file name from the user command        
 if __name__ == "__main__":
+    import sys
     fileToRead = sys.argv[1]
 
-states = createNetwork.readFromFile(fileToRead)
+states = readFromFile(fileToRead)
 
 if len(states) > 1:
     costs = []

@@ -7,17 +7,11 @@ from analysis import print_stats
 from random import random, uniform, shuffle
 
 def weighted_choice(events, totalRate):
-    #Shuffling events first
-    shuffled = []
-    indexes = range(len(events))
-    shuffle(indexes)
-    for i in indexes:
-        shuffled.append(events[i])
-    #Now randomly selecting from shuffled list
+    #Now randomly selecting from events list
     #Found this algorithm in one of the answers in Stack Overflow 
     r = uniform(0, totalRate)
     upto = 0
-    for rate, event in shuffled:
+    for rate, event in events:
         if upto + rate > r:
             return event
         upto += rate

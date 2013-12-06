@@ -1,5 +1,5 @@
 import unittest
-import read_file as createNetwork
+import parse_file as createNetwork
 import calculate_events
 import objects as new
 from collections import deque

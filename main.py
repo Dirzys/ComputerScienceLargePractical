@@ -1,4 +1,4 @@
-from read_file import readFromFile
+from parse_file import readFromFile
 from update_state import modify_state
 from objects import resetGlobal
 from calculate_events import calculate

@@ -4,11 +4,11 @@ from objects import resetGlobal
 from calculate_events import calculate
 import math
 from analysis import print_stats
-from random import random, uniform, shuffle
+from random import random, uniform
 
 def weighted_choice(events, totalRate):
-    #Now randomly selecting from events list
-    #Found this algorithm in one of the answers in Stack Overflow 
+    ''' Randomly selecting from events list.
+        Found this algorithm in one of the answers in Stack Overflow ''' 
     r = uniform(0, totalRate)
     upto = 0
     for rate, event in events:
@@ -24,6 +24,8 @@ def printExperiment(experiment):
         print line 
         
 def costFunction(missed, experiment):
+    ''' Calculated by multiplying the number of missed passengers
+        with the sum of each value of experiments'''
     totalChange = 0.0
     for change in experiment:
         totalChange += change[len(change)-1]

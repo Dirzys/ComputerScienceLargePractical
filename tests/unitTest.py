@@ -32,7 +32,7 @@ class CalculateEventsTest(unittest.TestCase):
         """ Test if calculate_events returns results in the required form """
         
         network = createNetwork.readFromFile('test_input.dat')[0][0]
-        results = calculate_events.calculate(network)
+        results = calculate_events.get_possible_events(network)
         
         for event in results:
             self.failUnless(isinstance(event, tuple), 'Possible events must be returned as tuples, but found: ' + str(type(event)) + ' for event ' + str(event))

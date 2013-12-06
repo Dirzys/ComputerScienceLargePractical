@@ -1,4 +1,4 @@
-import objects 
+from objects import * 
 from collections import deque
 
 def canBoardBus(state):
@@ -27,7 +27,7 @@ def canDisembarkBus(state):
 def canComeToStop(state):
     events = []
     for bus in state.buses:
-        if isinstance(bus.state, objects.Road):
+        if isinstance(bus.state, Road):
             events.append((float(bus.state.rate), ['comes', bus]))
     return events
 
@@ -53,8 +53,7 @@ def canLeaveStop(state):
                 events.append((busDepartsRate, ['departs', bus])) 
     return events
 
-def calculate(state):
-    #Find all possible events with their rates
+def get_possible_events(state):
     possibleEvents = []
     #New passenger can always arrive into the random stop with rate paxArrivalRate
     possibleEvents.append((state.paxArrives, ['newpax']))

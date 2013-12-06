@@ -1,7 +1,7 @@
 from parse_file import readFromFile
 from update_state import modify_state
 from objects import resetGlobal
-from calculate_events import calculate
+from calculate_events import get_possible_events
 import math
 from analysis import print_stats
 from random import random, uniform
@@ -35,7 +35,7 @@ def simulate(state, listEvents):
     time = 0
     resetGlobal()
     while time <= float(state.stopTime):
-        events = calculate(state)
+        events = get_possible_events(state)
         totalRate = sum([event[0] for event in events])
         delay = -totalRate/len(events) * math.log(random())
         chooseEvent = weightedChoice(events, totalRate)

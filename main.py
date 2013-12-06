@@ -6,7 +6,7 @@ import math
 from analysis import print_stats
 from random import random, uniform
 
-def weighted_choice(events, totalRate):
+def weightedChoice(events, totalRate):
     ''' Randomly selecting from events list.
         Found this algorithm in one of the answers in Stack Overflow ''' 
     r = uniform(0, totalRate)
@@ -38,7 +38,7 @@ def simulate(state, listEvents):
         events = calculate(state)
         totalRate = sum([event[0] for event in events])
         delay = -totalRate/len(events) * math.log(random())
-        chooseEvent = weighted_choice(events, totalRate)
+        chooseEvent = weightedChoice(events, totalRate)
         state = modify_state(state, chooseEvent, time, listEvents)
         #time = time + float(state.stopTime)
         time = time + delay

@@ -1,0 +1,23 @@
+route 1 stops 1 2 3 buses experiment 2 4 capacity experiment 20 50
+route 2 stops 2 3 4 buses 5 capacity 10
+route 3 stops 1 2 3 5 buses 3 capacity 5
+route 4 stops 2 4 5 buses 1 capacity 2
+
+road 1 2 experiment 0.3 0.4
+road 2 3 0.4
+road 3 1 0.5
+road 3 4 0.6
+road 4 2 0.7
+road 3 5 0.3
+road 5 1 0.4
+road 2 4 0.5
+road 4 5 0.6
+road 5 2 0.7
+
+board experiment 1.0 2.0
+disembarks 3.0
+departs 3.0
+new passengers 8.0
+stop time 1000.0
+ignore warnings
+optimise parameters

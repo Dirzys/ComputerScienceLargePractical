@@ -3,13 +3,14 @@ import read_file as createNetwork
 import calculate_events
 import objects as new
 from collections import deque
+from copy import deepcopy
 
 class ReadFileTest(unittest.TestCase):
 
     def runTest(self):
         """ Test if file is read and network created successfully  """
         
-        results = createNetwork.readFromFile('test_input.dat')
+        results = createNetwork.readFromFile('test_input.dat')[0][0]
 
         self.failUnless(len(results.routes)==1, 'One route must be added, found: ' + str(len(results.routes)))
         self.failUnless(len(results.roads)==3, 'Three roads must be added, found: ' + str(len(results.roads)))
@@ -30,7 +31,7 @@ class CalculateEventsTest(unittest.TestCase):
     def runTest(self):
         """ Test if calculate_events returns results in the required form """
         
-        network = createNetwork.readFromFile('test_input.dat')
+        network = createNetwork.readFromFile('test_input.dat')[0][0]
         results = calculate_events.calculate(network)
         
         for event in results:
@@ -53,8 +54,6 @@ class TestCanBoardBus(unittest.TestCase):
         state = new.State([], [], [], [stop, stop2], 1.0, 0, 0, 0, 0, False, False)
         
         results = calculate_events.canBoardBus(state)
-        
-        print results
         
         for event in results:
             self.failUnless(event[1][3].top_bus().id.split('.')[0] in event[1][1].bus, 'Bus passenger is looking for is not at the top of the queue: ' + str(event[1][3].top_bus().id))
@@ -113,6 +112,59 @@ class TestCanLeaveStop(unittest.TestCase):
         for event in results:
             self.failUnless(event[1][1].capacity == len(event[1][1].passengers), 'Bus ' + event[1][1].id + ' is not on capacity and should not leave the stop')
           
+class TestCreateExperimentsState(unittest.TestCase):
+
+    def runTest(self):
+        """ Test if addStateForExperiment works correctly """
+        
+        # Since we are creating new states for experiments from the first one 
+        # the test is going to create the first state from all the others by applying
+        # first experiment changes and then check if it produces the same state
+                
+        results = createNetwork.readFromFile('testExperiments.dat')
+        
+        firstState, firstExperiment = results[0]
+        for state, _ in results[1:]:
+            state = createNetwork.addStateForExperiment(firstExperiment, state)
+            
+            #Buses
+            buses = {}
+            for route in state.routes:
+                buses[route.number] = 0
+            buses2 = deepcopy(buses)
+            for bus in state.buses:
+                buses[bus.id.split('.')[0]] += 1
+            for bus in firstState.buses:
+                buses2[bus.id.split('.')[0]] += 1
+                
+            self.failUnless(buses == buses2, 'The number of buses in states are not the same: %(one)s and  %(two)s' % {'one':buses, 'two':buses2})
+                
+            
+            #Capacity
+            for bus in state.buses:
+                for bus2 in firstState.buses:
+                    if bus.id == bus2.id:
+                        self.failUnless(bus.capacity == bus2.capacity, 'Bus capacities are not the same for buses: %(one)s and  %(two)s' % {'one':bus.__dict__, 'two':bus2.__dict__})
+                
+                  
+            #Roads
+            for road in state.roads:
+                for road2 in firstState.roads:
+                    if road.starts == road2.starts and road.ends == road2.ends:
+                        self.failUnless(road.__eq__(road2), 'Roads from %(starts)s to %(ends)s are not the same' % {'starts':road.starts, 'ends':road.ends})
+              
+            #Boards rate
+            self.failUnless(firstState.boards == state.boards, 'Board rates are not the same for states: %(one)s and  %(two)s' % {'one':state.__dict__, 'two':state.__dict__})
+                
+            #Disembarks rate
+            self.failUnless(firstState.disembarks == state.disembarks, 'Disembarks rates are not the same for states: %(one)s and  %(two)s' % {'one':state.__dict__, 'two':state.__dict__})
+            
+            #Depart rate
+            self.failUnless(firstState.busDeparts == state.busDeparts, 'Bus depart rates are not the same for states: %(one)s and  %(two)s' % {'one':state.__dict__, 'two':state.__dict__})
+                     
+            #New passengers rate
+            self.failUnless(firstState.paxArrives == state.paxArrives, 'New passenger rates are not the same for states: %(one)s and  %(two)s' % {'one':state.__dict__, 'two':state.__dict__})
+                               
            
 def suite():
     suite = unittest.TestSuite()
@@ -122,6 +174,7 @@ def suite():
     suite.addTest(TestCanDisembarkBus())
     suite.addTest(TestCanComeToStop())
     suite.addTest(TestCanLeaveStop())
+    suite.addTest(TestCreateExperimentsState())
     return suite
 
 if __name__ == '__main__':

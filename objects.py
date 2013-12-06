@@ -91,6 +91,9 @@ class Road:
     def change_rate(self, rate):
         self.rate = rate
         
+    def __eq__(self, other) : 
+        return self.__dict__ == other.__dict__
+        
 class Passenger:
     'Class for all passengers'
     

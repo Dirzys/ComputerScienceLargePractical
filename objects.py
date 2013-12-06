@@ -86,10 +86,10 @@ class Road:
     def __init__(self, starts, ends, rate):
         self.starts = starts
         self.ends = ends
-        self.rate = rate
+        self.rate = float(rate)
         
     def change_rate(self, rate):
-        self.rate = rate
+        self.rate = float(rate)
         
     def __eq__(self, other) : 
         return self.__dict__ == other.__dict__

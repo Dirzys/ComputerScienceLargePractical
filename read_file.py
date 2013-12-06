@@ -93,10 +93,13 @@ def processLine(line, state):
 def modifyState(state, change):
     if change[0] == 'buses':
         #Removing all buses from route change[1]
+        remove = []
         for bus in state.buses:
             if bus.id.split('.')[0] == change[1]:
                 capacity = bus.capacity #Saving the capacity
-                state.remove_bus(bus)
+                remove.append(bus)
+        for bus in remove:
+            state.remove_bus(bus)
         #Finding all stops of route change[1]
         for route in state.routes:
             if route.number == change[1]:

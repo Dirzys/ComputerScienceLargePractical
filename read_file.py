@@ -1,15 +1,15 @@
-import objects as new
+from objects import *
 from collections import deque
 import itertools
 from copy import deepcopy
 
 def addBusesToNetwork(busNumber, busCount, stops, state, capacity):
     for i in range(0, int(busCount)):
-        state.add_bus(new.Bus(busNumber + '.' + str(i), stops[i % len(stops)], [], capacity))
+        state.add_bus(Bus(busNumber + '.' + str(i), stops[i % len(stops)], [], capacity))
     return state
         
 def addStopToNetwork(stopId, state):
-    state.add_stop(new.Stop(stopId, deque([]), []))
+    state.add_stop(Stop(stopId, deque([]), []))
     return state
 
 def addBusesToStops(state):
@@ -21,6 +21,8 @@ def addBusesToStops(state):
     return state
 
 def findExperiment(data, i, model):
+    ''' Finds experiment in the input line where 
+        the first value for experiment is in position i '''
     experiment = None
     #Find the rate if no experiment presents
     rate = data[i]
@@ -33,6 +35,7 @@ def findExperiment(data, i, model):
     return rate, experiment
 
 def parseRoute(data, state):
+    ''' Parses route given the data line for route'''
     experimentBuses = experimentCap = None
     routeNr = data[1]
     stops = []
@@ -55,7 +58,7 @@ def parseRoute(data, state):
             
     capacity, experimentCap = findExperiment(data, j+1, ["capacity", routeNr]) 
     #Finally add routes and buses to the network
-    state.add_route(new.Route(routeNr, stops))
+    state.add_route(Route(routeNr, stops))
     state = addBusesToNetwork(routeNr, buses, stops, state, int(capacity))
     return state, experimentBuses, experimentCap
 
@@ -69,7 +72,7 @@ def processLine(line, state):
         addStopToNetwork(data[1], state)
         addStopToNetwork(data[2], state)
         rate, experiment = findExperiment(data, 3, [object, data[1], data[2]])
-        state.add_road(new.Road(data[1], data[2], rate))
+        state.add_road(Road(data[1], data[2], rate))
     if object == "board":
         rate, experiment = findExperiment(data, 1, [object])
         state.changeBoards(rate)
@@ -126,16 +129,19 @@ def modifyState(state, change):
     return state
 
 def addStateForExperiment(experiment, state):
+    ''' Creates new state by modifying given state 
+        with the new values in the experiment '''
     for change in experiment:
         state = modifyState(state, change)
     return state
 
 def readFromFile(fileToRead):
+    ''' Parses file, finds experiments and creates states for each of the experiment '''
     file = open(fileToRead, 'r')
     #Initialize variables
     #order routes, roads, buses, stops, passengers, boardRate, disembarkRate, busDepartRate, 
     #paxArrivalRate, stopTime, ignoreWarning, optimiseParameters
-    state = new.State([], [], [], [], 0, 0, 0, 0, 0, False, False)
+    state = State([], [], [], [], 0, 0, 0, 0, 0, False, False)
     experiments = []
     
     for line in file:

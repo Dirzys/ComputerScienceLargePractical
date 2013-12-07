@@ -2,6 +2,7 @@ import unittest
 import parse_file as createNetwork
 import calculate_events
 import objects as new
+from check_state import *
 from collections import deque
 from copy import deepcopy
 
@@ -164,7 +165,24 @@ class TestCreateExperimentsState(unittest.TestCase):
                      
             #New passengers rate
             self.failUnless(firstState.paxArrives == state.paxArrives, 'New passenger rates are not the same for states: %(one)s and  %(two)s' % {'one':state.__dict__, 'two':state.__dict__})
-                               
+
+class TestWarningsAndErrors(unittest.TestCase):
+
+    def runTest(self):
+        """ Test if program finds warnings and errors correctly """
+                
+        results = createNetwork.readFromFile('testProblems.dat')
+        for state, _ in results:
+            warnings = errors = []
+            if not state.ignore:
+                warnings = findWarnings(state)
+            errors = findErrors(state)
+            if not warnings == errors == []:
+                for problem in (errors + warnings):
+                    print problem
+                break
+       
+                            
            
 def suite():
     suite = unittest.TestSuite()
@@ -175,6 +193,7 @@ def suite():
     suite.addTest(TestCanComeToStop())
     suite.addTest(TestCanLeaveStop())
     suite.addTest(TestCreateExperimentsState())
+    suite.addTest(TestWarningsAndErrors())
     return suite
 
 if __name__ == '__main__':

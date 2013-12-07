@@ -33,6 +33,7 @@ def costFunction(missed, experiment):
     return totalChange * missed
         
 def simulate(state, listEvents):
+    ''' The main simulation algorithm. Print statistics at the end'''
     time = 0
     resetGlobal()
     while time <= float(state.stopTime):
@@ -71,7 +72,7 @@ def printProblems(problems):
         print problem
         
 def findProblems(states):
-    ''' Find errors and warnings (if not ignore warnings) in the input '''
+    ''' Find errors and warnings (if not ignore warnings) in the input and print it if found some'''
     foundProblems = False
     for state, _ in states:
         warnings = errors = []

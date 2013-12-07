@@ -2,29 +2,32 @@ from random import choice
 import objects as new
 
 def modify_state(state, event, time, listEvents):
+    ''' Modify state by given event '''
     
     def updateBusInStop(bus):
+        ''' Add bus into stop at which the bus was going '''
         for stop in state.stops:
             if stop.id == bus.state:
                 stop.add_bus(bus, time)
                 break
     
     def addNewPax():
-        #Choosing random origin from all stops
+        #Choose random origin from all stops
         origin = choice(state.stops)
         originId = origin.id
-        #Finding all possible destinations reachable by any route
+        #Find all possible destinations reachable by any route
         destinations = []
         for route in state.routes:
             if originId in route.stops:
                 destinations.extend([dest for dest in route.stops if dest != originId])
+        #Choose destination randomly from destinations list
         destinationId = choice(list(set(destinations)))
         buses = []
-        #Finding all route numbers which can reach that destination
+        #Find all route numbers that can reach the destination
         for route in state.routes:
             if (destinationId in route.stops) and (originId in route.stops):
                 buses.append(route.number)
-        #Adding new passenger into the stop with id = originId
+        #Add new passenger into the stop with id = originId
         for stop in state.stops:
             if stop.id == originId:
                 stop.add_passengers(new.Passenger(destinationId, buses, time))
@@ -34,10 +37,12 @@ def modify_state(state, event, time, listEvents):
                     {'origin': originId, 'dest': destinationId, 'time': time}
     
     def boardsBus(pax, busId, stop):
+        #Remove passenger from the stop
         for possibleStop in state.stops:
             if stop.id == possibleStop.id:
                 possibleStop.remove_passenger(pax, time)
                 break
+        #Add passenger into the bus
         for bus in state.buses:
             if bus.id == busId:
                 bus.add_passenger(pax.changeTime(time))
@@ -53,6 +58,7 @@ def modify_state(state, event, time, listEvents):
         for route in state.routes:
             if route.number == bus.id.split('.')[0]:
                 chooseRoute = route
+        #Remove passenger from the bus
         for possibleBus in state.buses:
             if bus.id == possibleBus.id:
                 possibleBus.remove_passenger(pax, time, chooseRoute)
@@ -64,6 +70,7 @@ def modify_state(state, event, time, listEvents):
                     {'bus': bus.id, 'stop': stop.id, 'time': time}
     
     def arrivesAtStop(bus):
+        #Add bus to stop given by the road destination
         stopId = bus.state.ends
         for possibleBus in state.buses:
             if bus.id == possibleBus.id:
@@ -101,7 +108,7 @@ def modify_state(state, event, time, listEvents):
             if stopId == stop.id:
                 #Remove bus from stop queue 
                 stop.pop_bus(bus, time)
-                #Find all passengers unable to board this bus due to full capacity
+                #Find number of passengers unable to board this bus due to full capacity
                 for pax in stop.passengers:
                     if bus.id.split('.')[0] in pax.bus:
                         state.missPax(stopId, bus.id.split('.')[0])

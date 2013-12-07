@@ -17,6 +17,15 @@ def unnecessaryRoads(state):
                             {'one': road.starts, 'two': road.ends})
     return warnings
 
+def necessaryRoads(state):
+    errors = []
+    required = requiredRoads(state)
+    for road in required:
+        if road not in [[roadInState.starts, roadInState.ends] for roadInState in state.roads]:
+            errors.append('Error! Road between stops %(one)s and %(two)s is required, but not present in the input' % \
+                            {'one': road[0], 'two': road[1]})
+    return errors
+
 def findWarnings(state):
     warnings = []
     warnings.extend(unnecessaryRoads(state))
@@ -25,4 +34,5 @@ def findWarnings(state):
 
 def findErrors(state):
     errors = []
+    errors.extend(necessaryRoads(state))
     return errors

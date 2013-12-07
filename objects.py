@@ -158,7 +158,11 @@ class Stop:
                 return
         #Otherwise add the bus to the queue and save the time it arrived here
         self.busQueue.append(bus)
-        self.busArrivedOn[bus.id] = time 
+        #However, if the bus is alone at the stop, it does not needs to wait
+        if self.top_bus().id == bus.id:
+            self.busesWaited += 1
+        else:
+            self.busArrivedOn[bus.id] = time 
         
 class Bus:
     'Class for all buses'

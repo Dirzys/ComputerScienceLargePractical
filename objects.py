@@ -132,7 +132,7 @@ class Stop:
         
     def pop_bus(self, bus, time):
         # If popping top bus, the new top bus no longer considered as waiting in the queue
-        if self.top_bus() == bus:
+        if self.top_bus().id == bus.id:
             self.busQueue.remove(bus)
             busStopsWaiting = self.top_bus()
         # If popping not the top bus, this bus no longer considered as waiting in the queue    
@@ -158,7 +158,7 @@ class Stop:
                 return
         #Otherwise add the bus to the queue and save the time it arrived here
         self.busQueue.append(bus)
-        #However, if the bus is alone at the stop, it does not needs to wait
+        #However, if the bus is alone at the stop, it does not need to wait
         if self.top_bus().id == bus.id:
             self.busesWaited += 1
         else:

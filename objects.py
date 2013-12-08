@@ -1,7 +1,9 @@
 
 class State:
-    'Class for state'
+    ''' Class for state object '''
     
+    #Information about how many passengers have been 
+    #missed due full capacity of the bus
     missedPaxOnStop = {}
     missedPaxOnRoute = {}
     missedTotal = 0
@@ -69,19 +71,20 @@ class State:
         State.missedTotal += 1
             
 class Route:
-    'Class for all routes'
+    ''' Class for all routes '''
     
     def __init__(self, number, stops):
         self.number = number
         self.stops = stops
+        #Information about how many passengers use the route
         self.numOfPaxIn = 0
         self.journeysMade = 0
-        #Keeping information about how long passengers wait at route
+        #Information about how long passengers wait at route
         self.timePaxWaitsOnRoute = 0.0
         self.paxWaited = 0
         
 class Road:
-    'Class for all roads'
+    ''' Class for all roads '''
     
     def __init__(self, starts, ends, rate):
         self.starts = starts
@@ -92,10 +95,11 @@ class Road:
         self.rate = float(rate)
         
     def __eq__(self, other) : 
+        ''' Checking if two Road classes have the same information (are the same) '''
         return self.__dict__ == other.__dict__
         
 class Passenger:
-    'Class for all passengers'
+    ''' Class for all passengers '''
     
     def __init__(self, destination, bus, time):
         self.destination = destination
@@ -103,21 +107,23 @@ class Passenger:
         self.time = time
     
     def changeTime(self, time):
+        ''' Used then passenger boards the bus, i.e. 
+            stops waiting for bus and starts waiting at the route '''
         self.time = time
         return self
         
 class Stop:
-    'Class for all stops'
+    ''' Class for all stops '''
     
     def __init__(self, id, busQueue, passengers):
         self.id = id
         self.busQueue = busQueue
         self.passengers = passengers
-        #Keeping information about how long buses wait at queues
+        #Information about how long buses wait at queues
         self.timeOfWaiting = 0.0
         self.busesWaited = 0
         self.busArrivedOn = {}
-        #Keeping information about how long passengers wait at stops
+        #Information about how long passengers wait at stop
         self.timePaxWaitsOnStop = 0.0
         self.paxWaited = 0
         
@@ -165,13 +171,14 @@ class Stop:
             self.busArrivedOn[bus.id] = time 
         
 class Bus:
-    'Class for all buses'
+    ''' Class for all buses '''
     
     def __init__(self, id, state, passengers, capacity):
         self.id = id
         self.state = state
         self.passengers = passengers
         self.capacity = capacity
+        #Information about how many passengers use the bus
         self.numOfPaxIn = 0
         self.journeysMade = 0
         

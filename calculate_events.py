@@ -1,5 +1,4 @@
 from objects import * 
-from collections import deque
 
 def canBoardBus(state):
     boardingRate = state.boards

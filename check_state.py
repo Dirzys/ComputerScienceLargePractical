@@ -27,10 +27,17 @@ def necessaryRoads(state):
                             {'one': road[0], 'two': road[1]})
     return errors
 
+def routesWithOneStop(state):
+    warnings = []
+    for route in state.routes:
+        if len(route.stops) == 1:
+            warnings.append('Warning! Route %s has only one stop' % route.number)
+    return warnings
+
 def findWarnings(state):
     warnings = []
     warnings.extend(unnecessaryRoads(state))
-    
+    warnings.extend(routesWithOneStop(state))
     return warnings
 
 def findErrors(state):

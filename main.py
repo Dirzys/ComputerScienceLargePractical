@@ -1,6 +1,5 @@
 from parse_file import readFromFile
 from update_state import modify_state
-from objects import resetGlobal
 from calculate_events import get_possible_events
 from check_state import *
 import math
@@ -35,7 +34,6 @@ def costFunction(missed, experiment):
 def simulate(state, listEvents):
     ''' The main simulation algorithm. Print statistics at the end'''
     time = 0
-    resetGlobal()
     while time <= float(state.stopTime):
         events = get_possible_events(state)
         totalRate = sum([event[0] for event in events])

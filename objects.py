@@ -2,12 +2,6 @@
 class State:
     ''' Class for state object '''
     
-    #Information about how many passengers have been 
-    #missed due full capacity of the bus
-    missedPaxOnStop = {}
-    missedPaxOnRoute = {}
-    missedTotal = 0
-    
     def __init__(self, routes, roads, buses, stops, boards, disembarks, busDeparts, paxArrives, stopTime, ignore, optimise):
         self.routes = routes
         self.roads = roads
@@ -20,6 +14,11 @@ class State:
         self.stopTime = stopTime
         self.ignore = ignore
         self.optimise = optimise
+        #Information about how many passengers have been 
+        #missed due full capacity of the bus
+        self.missedPaxOnStop = {}
+        self.missedPaxOnRoute = {}
+        self.missedTotal = 0
         
     def add_route(self, route):
         self.routes.append(route)
@@ -60,15 +59,15 @@ class State:
         self.optimise = value
     
     def missPax(self, stopId, routeId):
-        if stopId in State.missedPaxOnStop:
-            State.missedPaxOnStop[stopId] += 1
+        if stopId in self.missedPaxOnStop:
+            self.missedPaxOnStop[stopId] += 1
         else:
-            State.missedPaxOnStop[stopId] = 1
-        if routeId in State.missedPaxOnRoute:
-            State.missedPaxOnRoute[routeId] += 1
+            self.missedPaxOnStop[stopId] = 1
+        if routeId in self.missedPaxOnRoute:
+            self.missedPaxOnRoute[routeId] += 1
         else:
-            State.missedPaxOnRoute[routeId] = 1
-        State.missedTotal += 1
+            self.missedPaxOnRoute[routeId] = 1
+        self.missedTotal += 1
             
 class Route:
     ''' Class for all routes '''
@@ -199,9 +198,3 @@ class Bus:
         self.journeysMade += 1
         route.numOfPaxIn += len(self.passengers)
         route.journeysMade += 1
-        
-def resetGlobal():
-    ''' Reseting global state parameters when new simulation is ran'''
-    State.missedPaxOnStop = {}
-    State.missedPaxOnRoute = {}
-    State.missedTotal = 0

@@ -22,6 +22,7 @@ class State:
         
     def add_route(self, route):
         self.routes.append(route)
+        self.missedPaxOnRoute[route.number] = 0 
             
     def add_road(self, road):
         self.roads.append(road)
@@ -36,6 +37,7 @@ class State:
         stop = stop if not stop.id in [existingStop.id for existingStop in self.stops] else []
         if stop != []:
             self.stops.append(stop)
+            self.missedPaxOnStop[stop.id] = 0
             
     def changeBoards(self, rate):
         self.boards = float(rate)
@@ -59,14 +61,8 @@ class State:
         self.optimise = value
     
     def missPax(self, stopId, routeId):
-        if stopId in self.missedPaxOnStop:
-            self.missedPaxOnStop[stopId] += 1
-        else:
-            self.missedPaxOnStop[stopId] = 1
-        if routeId in self.missedPaxOnRoute:
-            self.missedPaxOnRoute[routeId] += 1
-        else:
-            self.missedPaxOnRoute[routeId] = 1
+        self.missedPaxOnStop[stopId] += 1
+        self.missedPaxOnRoute[routeId] += 1
         self.missedTotal += 1
             
 class Route:

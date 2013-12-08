@@ -80,6 +80,10 @@ class Route:
         self.timePaxWaitsOnRoute = 0.0
         self.paxWaited = 0
         
+    def __eq__(self, other) : 
+        ''' Checking if two Route classes have the same information (are the same) '''
+        return self.__dict__ == other.__dict__
+        
 class Road:
     ''' Class for all roads '''
     

@@ -44,6 +44,16 @@ def sameRoutes(state):
         
     return problems
 
+def sameRoadsWithDifferentRate(state):
+    errors = []
+    for i in range(0, len(state.roads)):
+        for j in range(i+1, len(state.roads)):
+            isEqual = state.roads[i].__eq__(state.roads[j])
+            if state.roads[i].starts == state.roads[j].starts and state.roads[i].ends == state.roads[j].ends and not isEqual:
+                errors.append('Error! Road between stops %(one)s and %(two)s is repeated with different information' % \
+                            {'one': state.roads[i].starts, 'two': state.roads[i].ends})
+    return errors
+
 def findWarnings(state):
     warnings = []
     warnings.extend(unnecessaryRoads(state))
@@ -54,4 +64,5 @@ def findErrors(state):
     errors = []
     errors.extend(necessaryRoads(state))
     errors.extend(sameRoutes(state))
+    errors.extend(sameRoadsWithDifferentRate(state))
     return errors

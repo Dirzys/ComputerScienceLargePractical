@@ -126,5 +126,5 @@ def modify_state(state, event, time, listEvents):
     elif type == 'departs':
         leavesStop(event[1])
     else:
-        raise Exception, ': incorrect event type'
+        raise Exception, 'incorrect event type'
     return state

@@ -89,7 +89,10 @@ if __name__ == "__main__":
     fileToRead = sys.argv[1]
 
 states = readFromFile(fileToRead)
-problems = findProblems(states)
+
+problems = True
+if states:
+    problems = findProblems(states)
 
 if not problems:
     simulateAll(states)

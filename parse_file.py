@@ -68,29 +68,31 @@ def processLine(line, state):
     experiment = experimentAddi = None
     if object == "route":
         state, experiment, experimentAddi = parseRoute(data, state)
-    if object == "road":
+    elif object == "road":
         addStopToNetwork(data[1], state)
         addStopToNetwork(data[2], state)
         rate, experiment = findExperiment(data, 3, [object, data[1], data[2]])
         state.add_road(Road(data[1], data[2], rate))
-    if object == "board":
+    elif object == "board":
         rate, experiment = findExperiment(data, 1, [object])
         state.changeBoards(rate)
-    if object == "disembarks":
+    elif object == "disembarks":
         rate, experiment = findExperiment(data, 1, [object])
         state.changeDisembarks(rate)
-    if object == "departs":
+    elif object == "departs":
         rate, experiment = findExperiment(data, 1, [object])
         state.changeBusDeparts(rate)
-    if object == "new":
+    elif object == "new":
         rate, experiment = findExperiment(data, 2, [object + " passengers"])
         state.changePaxArrives(rate)
-    if object == "stop":
+    elif object == "stop":
         state.changeStopTime(data[2])
-    if object == "ignore":
+    elif object == "ignore":
         state.changeIgnore(True)
-    if object == "optimise":
+    elif object == "optimise":
         state.changeOptimise(True)
+    elif not (object[0] == "#" or object == "\n"):
+        raise Exception, 'incorrect input - %s' % line        
     return state, experiment, experimentAddi
 
 def modifyState(state, change):
@@ -146,7 +148,11 @@ def readFromFile(fileToRead):
     
     for line in file:
         experiment = None
-        state, experiment, experimentAddi = processLine(line, state)
+        try:
+            state, experiment, experimentAddi = processLine(line, state)
+        except IndexError as l:
+            print 'Error! Incorrect input'
+            return 
         if experiment:
             experiments.append(experiment)
         if experimentAddi:

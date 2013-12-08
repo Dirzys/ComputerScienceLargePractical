@@ -72,12 +72,8 @@ def modify_state(state, event, time, listEvents):
     def arrivesAtStop(bus):
         #Add bus to stop given by the road destination
         stopId = bus.state.ends
-        for possibleBus in state.buses:
-            if bus.id == possibleBus.id:
-                possibleBus.state = stopId
-                updatedBus = possibleBus
-                break
-        updateBusInStop(updatedBus)
+        bus.state = stopId
+        updateBusInStop(bus)
         
         if listEvents:
             print 'Bus %(bus)s arrives at stop %(stop)s at time %(time)0.4f' % \

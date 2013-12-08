@@ -1,5 +1,6 @@
 
 def requiredRoads(state):
+    ''' Find all roads that are required for simulation to run '''
     roads = []
     for route in state.routes:
         for i in range(0, len(route.stops)):

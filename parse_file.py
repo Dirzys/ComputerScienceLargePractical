@@ -139,7 +139,12 @@ def addStateForExperiment(experiment, state):
 
 def readFromFile(fileToRead):
     ''' Parses file, finds experiments and creates states for each of the experiment '''
-    file = open(fileToRead, 'r')
+    
+    try:
+        file = open(fileToRead, 'r')
+    except IOError:
+        print 'Error! No such file or directory: %s' % fileToRead
+        return
     #Initialize variables
     #order routes, roads, buses, stops, passengers, boardRate, disembarkRate, busDepartRate, 
     #paxArrivalRate, stopTime, ignoreWarning, optimiseParameters

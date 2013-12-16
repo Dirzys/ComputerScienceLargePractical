@@ -11,7 +11,7 @@ class ReadFileTest(unittest.TestCase):
     def runTest(self):
         """ Test if file is read and network created successfully  """
         
-        results = createNetwork.readFromFile('tests/test_input.dat')[0][0]
+        results = createNetwork.readFromFile('tests/testSimpleInput.dat')[0][0]
 
         self.failUnless(len(results.routes)==1, 'One route must be added, found: ' + str(len(results.routes)))
         self.failUnless(len(results.roads)==3, 'Three roads must be added, found: ' + str(len(results.roads)))
@@ -32,7 +32,7 @@ class CalculateEventsTest(unittest.TestCase):
     def runTest(self):
         """ Test if calculate_events returns results in the required form """
         
-        network = createNetwork.readFromFile('tests/test_input.dat')[0][0]
+        network = createNetwork.readFromFile('tests/testSimpleInput.dat')[0][0]
         results = calculate_events.get_possible_events(network)
         
         for event in results:

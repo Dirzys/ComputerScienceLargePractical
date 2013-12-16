@@ -107,12 +107,12 @@ class Passenger:
     def __init__(self, destination, bus, time):
         self.destination = destination
         self.bus = bus
-        self.time = time
+        self.time = float(time)
     
     def changeTime(self, time):
         ''' Used then passenger boards the bus, i.e. 
             stops waiting for bus and starts waiting at the route '''
-        self.time = time
+        self.time = float(time)
         return self
         
 class Stop:

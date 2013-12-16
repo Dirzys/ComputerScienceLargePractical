@@ -11,7 +11,7 @@ class ReadFileTest(unittest.TestCase):
     def runTest(self):
         """ Test if file is read and network created successfully  """
         
-        results = createNetwork.readFromFile('test_input.dat')[0][0]
+        results = createNetwork.readFromFile('tests/test_input.dat')[0][0]
 
         self.failUnless(len(results.routes)==1, 'One route must be added, found: ' + str(len(results.routes)))
         self.failUnless(len(results.roads)==3, 'Three roads must be added, found: ' + str(len(results.roads)))
@@ -32,7 +32,7 @@ class CalculateEventsTest(unittest.TestCase):
     def runTest(self):
         """ Test if calculate_events returns results in the required form """
         
-        network = createNetwork.readFromFile('test_input.dat')[0][0]
+        network = createNetwork.readFromFile('tests/test_input.dat')[0][0]
         results = calculate_events.get_possible_events(network)
         
         for event in results:
@@ -122,7 +122,7 @@ class TestCreateExperimentsState(unittest.TestCase):
         # the test is going to create the first state from all the others by applying
         # first experiment changes and then check if it produces the same state
                 
-        results = createNetwork.readFromFile('testExperiments.dat')
+        results = createNetwork.readFromFile('tests/testExperiments.dat')
         
         firstState, firstExperiment = results[0]
         for state, _ in results[1:]:
@@ -176,7 +176,7 @@ class TestWarningsAndErrors(unittest.TestCase):
             seen_add = seen.add
             return [ x for x in seq if x not in seen and not seen_add(x)]
                 
-        results = createNetwork.readFromFile('testProblems.dat')
+        results = createNetwork.readFromFile('tests/testProblems.dat')
         allWarnings = []
         allErrors = []
         for state, _ in results:

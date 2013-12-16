@@ -170,20 +170,29 @@ class TestWarningsAndErrors(unittest.TestCase):
 
     def runTest(self):
         """ Test if program finds warnings and errors correctly """
+        
+        def deleteDuplicates(seq):
+            seen = set()
+            seen_add = seen.add
+            return [ x for x in seq if x not in seen and not seen_add(x)]
                 
         results = createNetwork.readFromFile('testProblems.dat')
+        allWarnings = []
+        allErrors = []
         for state, _ in results:
             warnings = errors = []
             if not state.ignore:
                 warnings = findWarnings(state)
             errors = findErrors(state)
-            if not warnings == errors == []:
-                for problem in (errors + warnings):
-                    print problem
-                break
+            allWarnings.extend(warnings)
+            allErrors.extend(errors)
+            
+        allWarnings = deleteDuplicates(allWarnings)
+        allErrors = deleteDuplicates(allErrors)
+        
+        for problem in (allErrors + allWarnings):
+            print problem        
        
-                            
-           
 def suite():
     suite = unittest.TestSuite()
     suite.addTest(ReadFileTest())

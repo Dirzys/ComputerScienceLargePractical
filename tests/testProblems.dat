@@ -1,10 +1,12 @@
 route 1 stops 1 2 3 buses experiment 2 4 capacity experiment 20 50
+route 1 stops 1 2 3 buses experiment 2 4 capacity experiment 20 50
 route 2 stops 2 buses 5 capacity 10
 route 3 stops 1 2 3 5 buses 3 capacity 5
 route 4 stops 2 4 5 buses 1 capacity 2
 route 4 stops 2 4 5 buses 1 capacity 2
 route 3 stops 1 2 3 6 buses 3 capacity 5
 
+road 1 2 experiment 0.3 0.4
 road 1 2 experiment 0.3 0.4
 road 2 3 0.4
 road 3 1 0.5
@@ -13,7 +15,6 @@ road 4 2 0.7
 road 3 5 0.3
 road 5 1 0.4
 road 2 4 0.5
-road 2 4 0.8
 road 4 5 0.6
 road 5 9 0.7
 

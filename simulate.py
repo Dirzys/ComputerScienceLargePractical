@@ -74,26 +74,39 @@ def printProblems(problems):
     for problem in problems:
         print problem
         
+def deleteDuplicates(all):
+    seen = set()
+    seen_add = seen.add
+    return [ x for x in all if x not in seen and not seen_add(x)]
+        
 def findProblems(states):
     ''' Find errors and warnings (if not ignore warnings) in the input and print it if found some'''
     foundProblems = False
+    allWarnings = []
+    allErrors = []
     for state, _ in states:
         warnings = errors = []
         if not state.ignore:
             warnings = findWarnings(state)
         errors = findErrors(state)
-        if not warnings == errors == []:
-            printProblems(errors + warnings)
-            foundProblems = True
-            break
-    return foundProblems
+        allWarnings.extend(warnings)
+        allErrors.extend(errors)
+        
+    if not warnings == errors == []:
+        allWarnings = deleteDuplicates(allWarnings)
+        allErrors = deleteDuplicates(allErrors)
+        foundProblems = True
+        
+    return foundProblems, errors + warnings
 
 def run(fileToRead):
     states = readFromFile(fileToRead)
 
-    problems = True
+    foundProblems = True
     if states:
-        problems = findProblems(states)
+        foundProblems, problems = findProblems(states)
 
-    if not problems:
+    if not foundProblems:
         simulateAll(states)
+    else:
+        printProblems(problems)

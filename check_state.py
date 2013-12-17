@@ -34,7 +34,7 @@ def routesWithOneStop(state):
             warnings.append('Warning! Route %s has only one stop' % route.number)
     return warnings
 
-def sameRoutesWithDifferentInfo(state):
+def routesWithSameNumber(state):
     errors = []
     for i in range(0, len(state.routes)):
         for j in range(i+1, len(state.routes)):
@@ -42,7 +42,7 @@ def sameRoutesWithDifferentInfo(state):
                 errors.append('Error! Route %s is specified more than once' % state.routes[i].number)
     return errors
 
-def sameRoadsWithDifferentRate(state):
+def roadsWithSameStartAndEnd(state):
     errors = []
     for i in range(0, len(state.roads)):
         for j in range(i+1, len(state.roads)):
@@ -60,6 +60,6 @@ def findWarnings(state, experiments):
 def findErrors(state, experiments):
     errors = []
     errors.extend(necessaryRoads(state))
-    errors.extend(sameRoutesWithDifferentInfo(state))
-    errors.extend(sameRoadsWithDifferentRate(state))
+    errors.extend(routesWithSameNumber(state))
+    errors.extend(roadsWithSameStartAndEnd(state))
     return errors

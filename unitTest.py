@@ -1,8 +1,7 @@
 import unittest
-import parse_file as createNetwork
+from parse_file import readFromFile, addStateForExperiment
 import calculate_events
-import objects as new
-from check_state import *
+from objects import *
 from collections import deque
 from copy import deepcopy
 from simulate import simulate, findProblems
@@ -14,7 +13,7 @@ class ReadFileTest(unittest.TestCase):
     def runTest(self):
         """ Test if file is read and network created successfully  """
         
-        results = createNetwork.readFromFile('inputs/testSimpleInput.dat')[0][0]
+        results = readFromFile('inputs/testSimpleInput.dat')[0][0]
 
         self.failUnless(len(results.routes)==1, 'One route must be added, found: ' + str(len(results.routes)))
         self.failUnless(len(results.roads)==3, 'Three roads must be added, found: ' + str(len(results.roads)))
@@ -35,7 +34,7 @@ class CalculateEventsTest(unittest.TestCase):
     def runTest(self):
         """ Test if calculate_events returns results in the required form """
         
-        network = createNetwork.readFromFile('inputs/testSimpleInput.dat')[0][0]
+        network = readFromFile('inputs/testSimpleInput.dat')[0][0]
         results = calculate_events.get_possible_events(network)
         
         for event in results:
@@ -46,16 +45,16 @@ class TestCanBoardBus(unittest.TestCase):
     def runTest(self):
         """ Test canBoardBus function if it returns correct results """
         
-        paxs = [new.Passenger('2', ['1', '2'], 0.1), new.Passenger('3', ['2', '3'], 0.1)]
-        bus1 = new.Bus('2.0', '', [], 10)
-        bus2 = new.Bus('1.1', '', [], 10)
-        stop = new.Stop('1', deque([bus1, bus2]), paxs)
-        paxs2 = [new.Passenger('3', ['1', '2'], 0.1), new.Passenger('1', ['2', '3'], 0.1)]
-        bus1b = new.Bus('1.2', '', [], 10)
-        bus2b = new.Bus('2.3', '', [], 10)
-        stop2 = new.Stop('2', deque([bus1b, bus2b]), paxs2)
+        paxs = [Passenger('2', ['1', '2'], 0.1), Passenger('3', ['2', '3'], 0.1)]
+        bus1 = Bus('2.0', '', [], 10)
+        bus2 = Bus('1.1', '', [], 10)
+        stop = Stop('1', deque([bus1, bus2]), paxs)
+        paxs2 = [Passenger('3', ['1', '2'], 0.1), Passenger('1', ['2', '3'], 0.1)]
+        bus1b = Bus('1.2', '', [], 10)
+        bus2b = Bus('2.3', '', [], 10)
+        stop2 = Stop('2', deque([bus1b, bus2b]), paxs2)
         
-        state = new.State([], [], [], [stop, stop2], 1.0, 0, 0, 0, 0, False, False)
+        state = State([], [], [], [stop, stop2], 1.0, 0, 0, 0, 0, False, False)
         
         results = calculate_events.canBoardBus(state)
         
@@ -67,13 +66,13 @@ class TestCanDisembarkBus(unittest.TestCase):
     def runTest(self):
         """ Test canDisembarkBus function if it returns correct results """
         
-        paxs = [new.Passenger('2', '2.0', 0.1), new.Passenger('3', '2.0', 0.1)]
-        paxs2 = [new.Passenger('3', '1.1', 0.1), new.Passenger('2', '1.1', 0.1)]
-        bus1 = new.Bus('2.0', '', paxs, 10)
-        bus2 = new.Bus('1.1', '', paxs2, 10)
-        stop = new.Stop('2', deque([bus1, bus2]), [])
+        paxs = [Passenger('2', '2.0', 0.1), Passenger('3', '2.0', 0.1)]
+        paxs2 = [Passenger('3', '1.1', 0.1), Passenger('2', '1.1', 0.1)]
+        bus1 = Bus('2.0', '', paxs, 10)
+        bus2 = Bus('1.1', '', paxs2, 10)
+        stop = Stop('2', deque([bus1, bus2]), [])
         
-        state = new.State([], [], [], [stop], 0, 1.0, 0, 0, 0, False, False)
+        state = State([], [], [], [stop], 0, 1.0, 0, 0, 0, False, False)
         
         results = calculate_events.canDisembarkBus(state)
         
@@ -86,30 +85,30 @@ class TestCanComeToStop(unittest.TestCase):
     def runTest(self):
         """ Test canComeToStop function, if it returns correct results """
         
-        road1 = new.Road('1', '2', 1.0)
-        stop = new.Stop('2', deque([]), 2.0)
-        bus1 = new.Bus('2.0', road1, [], 10)
-        bus2 = new.Bus('1.1', stop, [], 10)
+        road1 = Road('1', '2', 1.0)
+        stop = Stop('2', deque([]), 2.0)
+        bus1 = Bus('2.0', road1, [], 10)
+        bus2 = Bus('1.1', stop, [], 10)
         
-        state = new.State([], [], [bus1, bus2], [], 0, 0, 0, 0, 0, False, False)
+        state = State([], [], [bus1, bus2], [], 0, 0, 0, 0, 0, False, False)
         
         results = calculate_events.canComeToStop(state)
         
         for event in results:
-            self.failUnless(isinstance(event[1][1].state, new.Road), 'Returned bus ' + str(event[1][1]) + ' is not on any road')
+            self.failUnless(isinstance(event[1][1].state, Road), 'Returned bus ' + str(event[1][1]) + ' is not on any road')
            
 class TestCanLeaveStop(unittest.TestCase):
 
     def runTest(self):
         """ Test canLeaveStop function, if it returns correct results """
         
-        paxs = [new.Passenger('3', '2.0', 0.1), new.Passenger('3', '2.0', 0.1)]
-        paxs2 = [new.Passenger('3', '1.1', 0.1), new.Passenger('2', '1.1', 0.1)]
-        bus1 = new.Bus('2.0', '2', paxs, 2)
-        bus2 = new.Bus('1.1', '2', paxs2, 10)
-        stop = new.Stop('2', deque([bus1, bus2]), [new.Passenger('5', ['2'], 0.1)])
+        paxs = [Passenger('3', '2.0', 0.1), Passenger('3', '2.0', 0.1)]
+        paxs2 = [Passenger('3', '1.1', 0.1), Passenger('2', '1.1', 0.1)]
+        bus1 = Bus('2.0', '2', paxs, 2)
+        bus2 = Bus('1.1', '2', paxs2, 10)
+        stop = Stop('2', deque([bus1, bus2]), [Passenger('5', ['2'], 0.1)])
         
-        state = new.State([], [], [bus1, bus2], [stop], 0, 0, 1.0, 0, 0, False, False)
+        state = State([], [], [bus1, bus2], [stop], 0, 0, 1.0, 0, 0, False, False)
         
         results = calculate_events.canLeaveStop(state)
         
@@ -121,7 +120,7 @@ class TestSimulationOutput(unittest.TestCase):
     def runTest(self):
         """ Test if simulation algorithm works correctly """
                
-        results = createNetwork.readFromFile('inputs/testSimulation.dat')
+        results = readFromFile('inputs/testSimulation.dat')
         
         seed(1)
         events, stats = simulate(results[0][0], False, True)
@@ -141,11 +140,11 @@ class TestCreateExperimentsState(unittest.TestCase):
         # the test is going to create the first state from all the others by applying
         # first experiment changes and then check if it produces the same state
                 
-        results = createNetwork.readFromFile('inputs/testExperiments.dat')
+        results = readFromFile('inputs/testExperiments.dat')
         
         firstState, firstExperiment = results[0]
         for state, _ in results[1:]:
-            state = createNetwork.addStateForExperiment(firstExperiment, state)
+            state = addStateForExperiment(firstExperiment, state)
             
             #Buses
             buses = {}
@@ -190,7 +189,7 @@ class TestWarningsAndErrors(unittest.TestCase):
     def runTest(self):
         """ Test if program finds warnings and errors correctly """
                 
-        results = createNetwork.readFromFile('inputs/testProblems.dat')
+        results = readFromFile('inputs/testProblems.dat')
         _, problems = findProblems(results)
         
         for problem in problems:

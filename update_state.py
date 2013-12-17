@@ -1,5 +1,5 @@
 from random import choice
-import objects as new
+from objects import *
 
 def modify_state(state, event, time, listEvents):
     ''' Modify state by given event '''
@@ -38,7 +38,7 @@ def modify_state(state, event, time, listEvents):
         #Add new passenger into the stop with id = originId
         for stop in state.stops:
             if stop.id == originId:
-                stop.add_passengers(new.Passenger(destinationId, buses, time))
+                stop.add_passengers(Passenger(destinationId, buses, time))
                 
         event = 'A new passenger enters at stop %(origin)s with destination %(dest)s at time %(time)0.4f' % \
                     {'origin': originId, 'dest': destinationId, 'time': time}

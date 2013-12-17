@@ -1,16 +1,16 @@
 from random import choice
 import objects as new
 
-def modify_state(state, event, time, listEvents, keepEvents):
+def modify_state(state, event, time, listEvents):
     ''' Modify state by given event '''
     
-    events = []
+    eventDone = ''
     
     def printKeepEvent(event):
         if listEvents:
             print event
-        if keepEvents:
-            events.append(event)
+        global eventDone
+        eventDone = event
     
     def updateBusInStop(bus):
         ''' Add bus into stop at which the bus was going '''
@@ -141,4 +141,5 @@ def modify_state(state, event, time, listEvents, keepEvents):
         leavesStop(event[1])
     else:
         raise Exception, 'incorrect event type'
-    return state, events if events else []
+    global eventDone
+    return state, eventDone

@@ -33,13 +33,16 @@ def costFunction(missed, experiment):
         
 def simulate(state, listEvents, keepEvents):
     ''' The main simulation algorithm. Print statistics at the end'''
+    eventsDone = []
     time = 0
     while time <= float(state.stopTime):
         events = get_possible_events(state)
         totalRate = sum([event[0] for event in events])
         delay = -totalRate/len(events) * math.log(random())
         chooseEvent = weightedChoice(events, totalRate)
-        state, _ = modify_state(state, chooseEvent, time, listEvents, keepEvents)
+        state, eventDone = modify_state(state, chooseEvent, time, listEvents)
+        if keepEvents:
+            eventsDone.append(eventDone)
         time = time + delay
     
     print_stats(state)

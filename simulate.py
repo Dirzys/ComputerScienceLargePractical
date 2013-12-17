@@ -35,7 +35,7 @@ def simulate(state, listEvents, keepEvents):
     ''' The main simulation algorithm. Print statistics at the end'''
     eventsDone = []
     time = 0
-    while time <= float(state.stopTime):
+    while time <= state.stopTime:
         events = get_possible_events(state)
         totalRate = sum([event[0] for event in events])
         delay = -1/totalRate * math.log(random())

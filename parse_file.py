@@ -50,14 +50,14 @@ def parseRoute(data, state):
     #If there is an experiment here - find the first number of buses and add other to experiment list
     if buses == "experiment":
         experimentBuses = []
-        buses = data[i+2]
+        buses = int(data[i+2])
         while data[j] != "capacity":
             experimentBuses.append(["buses", routeNr, int(data[j])])
             j += 1
             
     capacity, experimentCap = findExperiment(data, j+1, ["capacity", routeNr]) 
     #Finally add routes and buses to the network
-    state.add_route(Route(routeNr, stops))
+    state.add_route(Route(routeNr, stops, buses, capacity))
     state = addBusesToNetwork(routeNr, buses, stops, state, int(capacity))
     return state, experimentBuses, experimentCap
 
@@ -108,12 +108,18 @@ def modifyState(state, change):
         for route in state.routes:
             if route.number == change[1]:
                 stops = route.stops
+                route.changeBusNr(change[2])
+                break
         #Adding new buses - there will be change[2] of them
         state = addBusesToNetwork(change[1], change[2], stops, state, capacity)
     if change[0] == 'capacity':
         for bus in state.buses:
             if bus.id.split('.')[0] == change[1]:
                 bus.change_capacity(change[2])
+        for route in state.routes:
+            if route.number == change[1]:
+                route.changeCapacity(change[2])
+                break
     if change[0] == 'road':
         for road in state.roads:
             if road.starts == change[1] and road.ends == change[2]:

@@ -72,15 +72,23 @@ class State:
 class Route:
     ''' Class for all routes '''
     
-    def __init__(self, number, stops):
+    def __init__(self, number, stops, buses, capacity):
         self.number = number
         self.stops = stops
+        self.buses = buses
+        self.capacity = capacity
         #Information about how many passengers use the route
         self.numOfPaxIn = 0
         self.journeysMade = 0
         #Information about how long passengers wait at route
         self.timePaxWaitsOnRoute = 0.0
         self.paxWaited = 0
+        
+    def changeBusNr(self, buses):
+        self.buses = buses
+        
+    def changeCapacity(self, capacity):
+        self.capacity = capacity
         
     def __eq__(self, other) : 
         ''' Checking if two Route classes have the same information (are the same) '''

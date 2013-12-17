@@ -45,7 +45,10 @@ def simulate(state, listEvents, keepEvents):
             eventsDone.append(eventDone)
         time = time + delay
     
-    print_stats(state)
+    stats = print_stats(state, keepEvents)
+    
+    if keepEvents:
+        return eventsDone, stats
     
 def simulateAll(states):
     '''Simulate only once if no experiment present, otherwise simulate every possible state '''

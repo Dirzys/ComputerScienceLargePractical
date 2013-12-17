@@ -21,15 +21,11 @@ class State:
         self.missedTotal = 0
         
     def add_route(self, route):
-        route = route if not route.__dict__ in [existingRoute.__dict__ for existingRoute in self.routes] else []
-        if route != []:
-            self.routes.append(route)
-            self.missedPaxOnRoute[route.number] = 0 
+        self.routes.append(route)
+        self.missedPaxOnRoute[route.number] = 0 
             
     def add_road(self, road):
-        road = road if not road.__dict__ in [existingRoad.__dict__ for existingRoad in self.roads] else []
-        if road != []:
-            self.roads.append(road)
+        self.roads.append(road)
             
     def add_bus(self, bus):
         self.buses.append(bus)

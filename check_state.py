@@ -38,28 +38,26 @@ def sameRoutesWithDifferentInfo(state):
     errors = []
     for i in range(0, len(state.routes)):
         for j in range(i+1, len(state.routes)):
-            isEqual = state.routes[i].__eq__(state.routes[j])
-            if state.routes[i].number == state.routes[j].number and not isEqual:
-                errors.append('Error! Route %s is repeated with different information' % state.routes[i].number)
+            if state.routes[i].number == state.routes[j].number:
+                errors.append('Error! Route %s is specified more than once' % state.routes[i].number)
     return errors
 
 def sameRoadsWithDifferentRate(state):
     errors = []
     for i in range(0, len(state.roads)):
         for j in range(i+1, len(state.roads)):
-            isEqual = state.roads[i].__eq__(state.roads[j])
-            if state.roads[i].starts == state.roads[j].starts and state.roads[i].ends == state.roads[j].ends and not isEqual:
-                errors.append('Error! Road between stops %(one)s and %(two)s is repeated with different information' % \
+            if state.roads[i].starts == state.roads[j].starts and state.roads[i].ends == state.roads[j].ends:
+                errors.append('Error! Road between stops %(one)s and %(two)s is specified more than once' % \
                             {'one': state.roads[i].starts, 'two': state.roads[i].ends})
     return errors
 
-def findWarnings(state):
+def findWarnings(state, experiments):
     warnings = []
     warnings.extend(unnecessaryRoads(state))
     warnings.extend(routesWithOneStop(state))
     return warnings
 
-def findErrors(state):
+def findErrors(state, experiments):
     errors = []
     errors.extend(necessaryRoads(state))
     errors.extend(sameRoutesWithDifferentInfo(state))

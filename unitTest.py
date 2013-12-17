@@ -192,12 +192,14 @@ class TestWarningsAndErrors(unittest.TestCase):
 
     def runTest(self):
         """ Test if program finds warnings and errors correctly """
-                
+        
+        testProblems = ['Error! Road between stops 2 and 2 is required, but not present in the input', 'Error! Road between stops 5 and 2 is required, but not present in the input', 'Error! Road between stops 3 and 6 is required, but not present in the input', 'Error! Road between stops 6 and 1 is required, but not present in the input', 'Error! Route 1 is specified more than once', 'Error! Route 3 is specified more than once', 'Error! Route 4 is specified more than once', 'Error! Road between stops 1 and 2 is specified more than once', 'Warning! Road between stops 3 and 4 will not be used since no route operates through this road', 'Warning! Road between stops 4 and 2 will not be used since no route operates through this road', 'Warning! Road between stops 5 and 9 will not be used since no route operates through this road', 'Warning! Route 2 has only one stop']
+         
         results, experiments = readFromFile('inputs/testProblems.dat')
         _, problems = findProblems(results, experiments)
         
-        for problem in problems:
-            print problem        
+        for i, problem in enumerate(problems):
+            self.failUnless(problem == testProblems[i], 'Problems do not match: %s' % problem)
        
 def suite():
     suite = unittest.TestSuite()

@@ -51,15 +51,20 @@ def roadsWithSameStartAndEnd(state):
                             {'one': state.roads[i].starts, 'two': state.roads[i].ends})
     return errors
 
+def deleteDuplicates(all):
+    seen = set()
+    seen_add = seen.add
+    return [ x for x in all if x not in seen and not seen_add(x)]
+
 def findWarnings(state, experiments):
     warnings = []
     warnings.extend(unnecessaryRoads(state))
     warnings.extend(routesWithOneStop(state))
-    return warnings
+    return deleteDuplicates(warnings)
 
 def findErrors(state, experiments):
     errors = []
     errors.extend(necessaryRoads(state))
     errors.extend(routesWithSameNumber(state))
     errors.extend(roadsWithSameStartAndEnd(state))
-    return errors
+    return deleteDuplicates(errors)

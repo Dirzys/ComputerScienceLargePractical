@@ -77,11 +77,6 @@ def printProblems(problems):
     for problem in problems:
         print problem
         
-def deleteDuplicates(all):
-    seen = set()
-    seen_add = seen.add
-    return [ x for x in all if x not in seen and not seen_add(x)]
-        
 def findProblems(state, experiments):
     ''' Find errors and warnings (if not ignore warnings) in the input and print it if found some'''
     foundProblems = False

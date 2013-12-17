@@ -5,6 +5,9 @@ import objects as new
 from check_state import *
 from collections import deque
 from copy import deepcopy
+from simulate import simulate
+from random import seed
+from simulationTestEvents import testEvents, testStats
 
 class ReadFileTest(unittest.TestCase):
 
@@ -112,6 +115,22 @@ class TestCanLeaveStop(unittest.TestCase):
         
         for event in results:
             self.failUnless(event[1][1].capacity == len(event[1][1].passengers), 'Bus ' + event[1][1].id + ' is not on capacity and should not leave the stop')
+       
+class TestSimulationOutput(unittest.TestCase):
+
+    def runTest(self):
+        """ Test if simulation algorithm works correctly """
+               
+        results = createNetwork.readFromFile('inputs/testSimulation.dat')
+        
+        seed(1)
+        events, stats = simulate(results[0][0], False, True)
+        
+        for i, event in enumerate(events):
+            self.failUnless(event == testEvents[i], 'Simulation do not match: %s' % event)
+        
+        for i, stat in enumerate(stats):
+            self.failUnless(stat == testStats[i], 'Statistics do not match: %s' % stat)
           
 class TestCreateExperimentsState(unittest.TestCase):
 
@@ -201,6 +220,7 @@ def suite():
     suite.addTest(TestCanDisembarkBus())
     suite.addTest(TestCanComeToStop())
     suite.addTest(TestCanLeaveStop())
+    suite.addTest(TestSimulationOutput())
     suite.addTest(TestCreateExperimentsState())
     suite.addTest(TestWarningsAndErrors())
     return suite

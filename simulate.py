@@ -38,7 +38,7 @@ def simulate(state, listEvents, keepEvents):
     while time <= float(state.stopTime):
         events = get_possible_events(state)
         totalRate = sum([event[0] for event in events])
-        delay = -totalRate/len(events) * math.log(random())
+        delay = -1/totalRate * math.log(random())
         chooseEvent = weightedChoice(events, totalRate)
         state, eventDone = modify_state(state, chooseEvent, time, listEvents)
         if keepEvents:

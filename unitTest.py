@@ -5,7 +5,7 @@ import objects as new
 from check_state import *
 from collections import deque
 from copy import deepcopy
-from simulate import simulate
+from simulate import simulate, findProblems
 from random import seed
 from simulationTestEvents import testEvents, testStats
 
@@ -189,27 +189,11 @@ class TestWarningsAndErrors(unittest.TestCase):
 
     def runTest(self):
         """ Test if program finds warnings and errors correctly """
-        
-        def deleteDuplicates(seq):
-            seen = set()
-            seen_add = seen.add
-            return [ x for x in seq if x not in seen and not seen_add(x)]
                 
         results = createNetwork.readFromFile('inputs/testProblems.dat')
-        allWarnings = []
-        allErrors = []
-        for state, _ in results:
-            warnings = errors = []
-            if not state.ignore:
-                warnings = findWarnings(state)
-            errors = findErrors(state)
-            allWarnings.extend(warnings)
-            allErrors.extend(errors)
-            
-        allWarnings = deleteDuplicates(allWarnings)
-        allErrors = deleteDuplicates(allErrors)
+        _, problems = findProblems(results)
         
-        for problem in (allErrors + allWarnings):
+        for problem in problems:
             print problem        
        
 def suite():

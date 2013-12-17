@@ -16,8 +16,13 @@ To run these use:
 
 	python unitTest.py
 	
-It contains all tests I have written. I have added all tests into one file just for simpler test process 
-(running only one test file for testing all cases is easier than running separate tests)
+It contains all tests I have written. I have added all tests into one file just for simpler test process.
 
+Test contains tests for testing:
+- if simple file without experiments is parsed correctly
+- if events are calculated correctly separately for boarding and disembarking the bus, arriving and leaving the stop
+- if simulation outputs correct events and accurate statistics by using seed
+- if file with experiments is parsed correctly and correct states are created
+- if file catches errors and warnings (valid/invalid inputs) 
 
  

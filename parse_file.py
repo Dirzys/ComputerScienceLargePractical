@@ -17,7 +17,6 @@ def addBusesToStops(state):
         for bus in state.buses:
             if bus.state == stop.id:
                 stop.add_bus(bus, 0.0)
-        stop.busQueue = sorted(stop.busQueue)
     return state
 
 def findExperiment(data, i, model):

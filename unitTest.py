@@ -15,19 +15,19 @@ class ReadFileTest(unittest.TestCase):
         
         results = readFromFile('inputs/testSimpleInput.dat')[0][0]
 
-        self.failUnless(len(results.routes)==1, 'One route must be added, found: ' + str(len(results.routes)))
-        self.failUnless(len(results.roads)==3, 'Three roads must be added, found: ' + str(len(results.roads)))
-        self.failUnless(len(results.buses)==4, 'Four buses must be added, found: ' + str(len(results.buses)))
-        self.failUnless(len(results.stops)==3, 'Three stops must be added, found: ' + str(len(results.stops)))
-        self.failUnless(results.boards==1.0, 'Boarding rate should be 1.0, found: ' + str(results.boards))
-        self.failUnless(results.disembarks==3.0, 'Disembark rate should be 3.0, found: ' + str(results.disembarks))
-        self.failUnless(results.busDeparts==3.0, 'Buses departing rate should be 3.0, found: ' + str(results.busDeparts))
-        self.failUnless(results.paxArrives==8.0, 'New passengers arrival rate should be 8.0, found: ' + str(results.paxArrives))
-        self.failUnless(results.stopTime==100.0, 'Stop time should be 100.0, found: ' + str(results.stopTime))
-        self.failUnless(results.ignore==True, 'Ignore warnings should be true, found: ' + str(results.ignore))
-        self.failUnless(results.optimise==True, 'Optimisation should be true, found: ' + str(results.optimise))
+        self.failUnless(len(results.routes)==1, 'One route must be added, found: %s' % len(results.routes))
+        self.failUnless(len(results.roads)==3, 'Three roads must be added, found: %s' % len(results.roads))
+        self.failUnless(len(results.buses)==4, 'Four buses must be added, found: %s' % len(results.buses))
+        self.failUnless(len(results.stops)==3, 'Three stops must be added, found: %s' % len(results.stops))
+        self.failUnless(results.boards==1.0, 'Boarding rate should be 1.0, found: %s' % results.boards)
+        self.failUnless(results.disembarks==3.0, 'Disembark rate should be 3.0, found: %s' % results.disembarks)
+        self.failUnless(results.busDeparts==3.0, 'Buses departing rate should be 3.0, found: %s' % results.busDeparts)
+        self.failUnless(results.paxArrives==8.0, 'New passengers arrival rate should be 8.0, found: %s' % results.paxArrives)
+        self.failUnless(results.stopTime==100.0, 'Stop time should be 100.0, found: %s' % results.stopTime)
+        self.failUnless(results.ignore==True, 'Ignore warnings should be true, found: %s' % results.ignore)
+        self.failUnless(results.optimise==True, 'Optimisation should be true, found: %s' % results.optimise)
         
-        self.failUnless(len(results.routes[0].stops)==3, '3 stops must be added to route 1, found: ' + str(len(results.routes[0].stops)))
+        self.failUnless(len(results.routes[0].stops)==3, '3 stops must be added to route 1, found: %s' % len(results.routes[0].stops))
         
 class CalculateEventsTest(unittest.TestCase):
 
@@ -38,7 +38,8 @@ class CalculateEventsTest(unittest.TestCase):
         results = calculate_events.get_possible_events(network)
         
         for event in results:
-            self.failUnless(isinstance(event, tuple), 'Possible events must be returned as tuples, but found: ' + str(type(event)) + ' for event ' + str(event))
+            self.failUnless(isinstance(event, tuple), 'Possible events must be returned as tuples, but found: %(type)s for event %(event)s' % \
+                                                        {'type': type(event), 'event': event})
 
 class TestCanBoardBus(unittest.TestCase):
 
@@ -59,7 +60,7 @@ class TestCanBoardBus(unittest.TestCase):
         results = calculate_events.canBoardBus(state)
         
         for event in results:
-            self.failUnless(event[1][3].top_bus().id.split('.')[0] in event[1][1].bus, 'Bus passenger is looking for is not at the top of the queue: ' + str(event[1][3].top_bus().id))
+            self.failUnless(event[1][3].top_bus().id.split('.')[0] in event[1][1].bus, 'Bus the passenger is looking for is not at the top of the queue: %s' % event[1][3].top_bus().id)
 
 class TestCanDisembarkBus(unittest.TestCase):
 
@@ -77,8 +78,10 @@ class TestCanDisembarkBus(unittest.TestCase):
         results = calculate_events.canDisembarkBus(state)
         
         for event in results:
-            self.failUnless(event[1][1] in event[1][2].passengers, 'Passenger ' + str(event[1][1]) + ' is not in the bus ' + str(event[1][2].id) +', hence wrong event: ')
-            self.failUnless(event[1][1].destination == event[1][3].id, 'Passenger ' + str(event[1][1]) + ' want to disembark at the stop ' + str(event[1][1].destination) + ', not stop ' + str(event[1][3].id))
+            self.failUnless(event[1][1] in event[1][2].passengers, 'Passenger %(pax)s is not in the bus %(bus)s, hence he cannot disembark this bus' % \
+                                                                        {'pax': event[1][1].__dict__, 'bus': event[1][2].id})
+            self.failUnless(event[1][1].destination == event[1][3].id, 'Passenger %(pax)s wants to disembark at the stop %(stop)s, not stop %(stop2)s' % \
+                                                                        {'pax': event[1][1].__dict__, 'stop': event[1][1].destination, 'stop2': event[1][3].id})
 
 class TestCanComeToStop(unittest.TestCase):
 
@@ -95,7 +98,7 @@ class TestCanComeToStop(unittest.TestCase):
         results = calculate_events.canComeToStop(state)
         
         for event in results:
-            self.failUnless(isinstance(event[1][1].state, Road), 'Returned bus ' + str(event[1][1]) + ' is not on any road')
+            self.failUnless(isinstance(event[1][1].state, Road), 'Returned bus %s is not on any road' % event[1][1].__dict__)
            
 class TestCanLeaveStop(unittest.TestCase):
 
@@ -113,7 +116,7 @@ class TestCanLeaveStop(unittest.TestCase):
         results = calculate_events.canLeaveStop(state)
         
         for event in results:
-            self.failUnless(event[1][1].capacity == len(event[1][1].passengers), 'Bus ' + event[1][1].id + ' is not on capacity and should not leave the stop')
+            self.failUnless(event[1][1].capacity == len(event[1][1].passengers), 'Bus %s is not on capacity and should not leave the stop' % event[1][1].id)
        
 class TestSimulationOutput(unittest.TestCase):
 

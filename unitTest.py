@@ -1,5 +1,5 @@
 import unittest
-from parse_file import readFromFile, addStateForExperiment
+from parse_file import readFromFile, addStateForExperiment, createStatesFromExperiments
 import calculate_events
 from objects import *
 from collections import deque
@@ -13,7 +13,7 @@ class ReadFileTest(unittest.TestCase):
     def runTest(self):
         """ Test if file is read and network created successfully  """
         
-        results = readFromFile('inputs/testSimpleInput.dat')[0][0]
+        results, _ = readFromFile('inputs/testSimpleInput.dat')
 
         self.failUnless(len(results.routes)==1, 'One route must be added, found: %s' % len(results.routes))
         self.failUnless(len(results.roads)==3, 'Three roads must be added, found: %s' % len(results.roads))
@@ -34,7 +34,7 @@ class CalculateEventsTest(unittest.TestCase):
     def runTest(self):
         """ Test if calculate_events returns results in the required form """
         
-        network = readFromFile('inputs/testSimpleInput.dat')[0][0]
+        network, _ = readFromFile('inputs/testSimpleInput.dat')
         results = calculate_events.get_possible_events(network)
         
         for event in results:
@@ -123,10 +123,10 @@ class TestSimulationOutput(unittest.TestCase):
     def runTest(self):
         """ Test if simulation algorithm works correctly """
                
-        results = readFromFile('inputs/testSimulation.dat')
+        results, _ = readFromFile('inputs/testSimulation.dat')
         
         seed(1)
-        events, stats = simulate(results[0][0], False, True)
+        events, stats = simulate(results, False, True)
         
         for i, event in enumerate(events):
             self.failUnless(event == testEvents[i], 'Simulation do not match: %s' % event)
@@ -143,7 +143,8 @@ class TestCreateExperimentsState(unittest.TestCase):
         # the test is going to create the first state from all the others by applying
         # first experiment changes and then check if it produces the same state
                 
-        results = readFromFile('inputs/testExperiments.dat')
+        state, experiments = readFromFile('inputs/testExperiments.dat')
+        results = createStatesFromExperiments(state, experiments)
         
         firstState, firstExperiment = results[0]
         for state, _ in results[1:]:
@@ -192,8 +193,8 @@ class TestWarningsAndErrors(unittest.TestCase):
     def runTest(self):
         """ Test if program finds warnings and errors correctly """
                 
-        results = readFromFile('inputs/testProblems.dat')
-        _, problems = findProblems(results)
+        results, experiments = readFromFile('inputs/testProblems.dat')
+        _, problems = findProblems(results, experiments)
         
         for problem in problems:
             print problem        

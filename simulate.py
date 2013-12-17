@@ -1,4 +1,4 @@
-from parse_file import readFromFile
+from parse_file import readFromFile, createStatesFromExperiments
 from update_state import modify_state
 from calculate_events import get_possible_events
 from check_state import *
@@ -50,8 +50,11 @@ def simulate(state, listEvents, keepEvents):
     if keepEvents:
         return eventsDone, stats
     
-def simulateAll(states):
+def simulateAll(state, experiments):
     '''Simulate only once if no experiment present, otherwise simulate every possible state '''
+    
+    states = createStatesFromExperiments(state, experiments)
+    
     if len(states) > 1:
         costs = []
         for state, vari in states:
@@ -79,34 +82,25 @@ def deleteDuplicates(all):
     seen_add = seen.add
     return [ x for x in all if x not in seen and not seen_add(x)]
         
-def findProblems(states):
+def findProblems(state, experiments):
     ''' Find errors and warnings (if not ignore warnings) in the input and print it if found some'''
     foundProblems = False
-    allWarnings = []
-    allErrors = []
-    for state, _ in states:
-        warnings = errors = []
-        if not state.ignore:
-            warnings = findWarnings(state)
-        errors = findErrors(state)
-        allWarnings.extend(warnings)
-        allErrors.extend(errors)
+    warnings = errors = []
+    if not state.ignore:
+        warnings = findWarnings(state, experiments)
+    errors = findErrors(state, experiments)
         
     if not warnings == errors == []:
-        allWarnings = deleteDuplicates(allWarnings)
-        allErrors = deleteDuplicates(allErrors)
         foundProblems = True
         
     return foundProblems, errors + warnings
 
 def run(fileToRead):
-    states = readFromFile(fileToRead)
-
-    foundProblems = True
-    if states:
-        foundProblems, problems = findProblems(states)
+    state, experiments = readFromFile(fileToRead)
+    
+    foundProblems, problems = findProblems(state, experiments)
 
     if not foundProblems:
-        simulateAll(states)
+        simulateAll(state, experiments)
     else:
         printProblems(problems)

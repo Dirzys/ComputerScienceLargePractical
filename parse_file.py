@@ -142,6 +142,16 @@ def addStateForExperiment(experiment, state):
         state = modifyState(state, change)
     return state
 
+def createStatesFromExperiments(state, experiments):
+    states = [state]
+    #Now need to get all possible variations of experiments
+    variations = list(itertools.product(*experiments))
+    states = [(state, variations[0])]
+    for variation in variations[1:]: #First variation already added as a state
+        states.append((addBusesToStops(addStateForExperiment(variation, deepcopy(state))), variation))
+
+    return [(state, vari) for state, vari in states]
+
 def readFromFile(fileToRead):
     ''' Parses file, finds experiments and creates states for each of the experiment '''
     
@@ -169,11 +179,5 @@ def readFromFile(fileToRead):
             experiments.append(experimentAddi)
             
     file.close() 
-    states = [state]
-    #Now need to get all possible variations of experiments
-    variations = list(itertools.product(*experiments))
-    states = [(state, variations[0])]
-    for variation in variations[1:]: #First variation already added as a state
-        states.append((addStateForExperiment(variation, deepcopy(state)), variation))
 
-    return [(addBusesToStops(state), vari) for state, vari in states]
+    return addBusesToStops(state), experiments

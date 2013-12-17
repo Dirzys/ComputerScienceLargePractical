@@ -31,7 +31,7 @@ def costFunction(missed, experiment):
         totalChange += change[len(change)-1]
     return totalChange * missed
         
-def simulate(state, listEvents):
+def simulate(state, listEvents, keepEvents):
     ''' The main simulation algorithm. Print statistics at the end'''
     time = 0
     while time <= float(state.stopTime):
@@ -39,8 +39,7 @@ def simulate(state, listEvents):
         totalRate = sum([event[0] for event in events])
         delay = -totalRate/len(events) * math.log(random())
         chooseEvent = weightedChoice(events, totalRate)
-        state = modify_state(state, chooseEvent, time, listEvents)
-        #time = time + float(state.stopTime)
+        state, _ = modify_state(state, chooseEvent, time, listEvents, keepEvents)
         time = time + delay
     
     print_stats(state)
@@ -51,7 +50,7 @@ def simulateAll(states):
         costs = []
         for state, vari in states:
             printExperiment(vari)
-            simulate(state, False)
+            simulate(state, False, False)
             costs.append((costFunction(state.missedTotal, vari), vari))
         
         #Find experiment that has minimum cost
@@ -61,7 +60,7 @@ def simulateAll(states):
             printExperiment(optimised)
     else:
         if not states[0][0].optimise:
-            simulate(states[0][0], True)
+            simulate(states[0][0], True, False)
         else:
             print "Error: Cannot optimise parameters when there are no experiment present"
 

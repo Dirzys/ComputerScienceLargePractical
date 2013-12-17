@@ -5,6 +5,7 @@ route 3 stops 1 2 3 5 buses 3 capacity 5
 route 4 stops 2 4 5 buses 1 capacity 2
 route 4 stops 2 4 5 buses 1 capacity 2
 route 3 stops 1 2 3 6 buses 3 capacity 5
+route 3 stops 1 2 3 6 buses 3 capacity 5
 
 road 1 2 experiment 0.3 0.4
 road 1 2 experiment 0.3 0.4

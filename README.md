@@ -1,6 +1,6 @@
 ---GENERAL INFO---
 I have written my simulation in Python. Python, because this is my favourite programming language that I am using 
-daily.
+daily. For implementation I have used Windows OS and Eclipse Juno.
 
 ---HOW TO RUN SIMULATION---
 To run the simulation use: 

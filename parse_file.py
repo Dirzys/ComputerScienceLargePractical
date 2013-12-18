@@ -94,8 +94,8 @@ def processLine(line, state):
         state.changeIgnore(True)
     elif object == "optimise":
         state.changeOptimise(True)
-    elif not (object[0] == "#" or object == "\n"):
-        raise IndexError      
+    elif not (object[0] == "#" or object.isspace()):
+        raise IndexError     
     return state, experiment, experimentAddi
 
 def modifyState(state, change):

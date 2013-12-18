@@ -22,7 +22,7 @@ def print_stats(state, keepStats):
         numPax = bus.numOfPaxIn
         numJourn = float(bus.journeysMade)
         printKeepStats("average passengers bus %(bus)s %(mean)0.4f" % \
-                       {'bus': bus.id, 'mean': (numPax/numJourn) if numJourn != 0 else 0})
+                       {'bus': bus.id, 'mean': ((numPax/numJourn) if numJourn != 0 else 0)})
      
     overall = {'numJourn' : 0,
                'numPax'   : 0
@@ -32,11 +32,11 @@ def print_stats(state, keepStats):
         numPax = route.numOfPaxIn
         numJourn = float(route.journeysMade)
         printKeepStats("average passengers route %(route)s %(mean)0.4f" % \
-                       {'route': route.number, 'mean': (numPax/numJourn) if numJourn != 0 else 0})
+                       {'route': route.number, 'mean': ((numPax/numJourn) if numJourn != 0 else 0)})
         overall['numJourn'] += numJourn
         overall['numPax'] += numPax
         
-    printKeepStats("average passengers %0.4f" % (overall['numPax']/overall['numJourn']) if overall['numJourn'] != 0 else 0)  
+    printKeepStats("average passengers %0.4f" % ((overall['numPax']/overall['numJourn']) if overall['numJourn'] != 0 else 0))  
                
     #Average Bus Queuing Time
     overall = {'timeOfWaiting' : 0.0,
@@ -56,11 +56,11 @@ def print_stats(state, keepStats):
                 busesWaited += 1
                 
         printKeepStats("average queuing at stop %(stop)s %(time)0.4f" % \
-                       {'stop': stop.id, 'time': (timeOfWaiting/busesWaited) if busesWaited != 0 else 0})
+                       {'stop': stop.id, 'time': ((timeOfWaiting/busesWaited) if busesWaited != 0 else 0)})
         overall['timeOfWaiting'] += timeOfWaiting
         overall['busesWaited'] += busesWaited
         
-    printKeepStats("average queuing at all stops %0.4f" % (overall['timeOfWaiting']/overall['busesWaited']) if overall['busesWaited'] != 0 else 0)
+    printKeepStats("average queuing at all stops %0.4f" % ((overall['timeOfWaiting']/overall['busesWaited']) if overall['busesWaited'] != 0 else 0))
     
     #Average Waiting Passengers
      
@@ -76,7 +76,7 @@ def print_stats(state, keepStats):
             timePaxWaitsOnStop += pax.time
             paxWaited += 1.0
         printKeepStats("average waiting passengers at stop %(stop)s %(mean)0.4f" % \
-                       {'stop': stop.id, 'mean': (timePaxWaitsOnStop/paxWaited) if paxWaited != 0 else 0})
+                       {'stop': stop.id, 'mean': ((timePaxWaitsOnStop/paxWaited) if paxWaited != 0 else 0)})
         overall['timePaxWaits'] += timePaxWaitsOnStop
         overall['paxWaited'] += paxWaited
         
@@ -90,10 +90,10 @@ def print_stats(state, keepStats):
                     timePaxWaitsOnRoute += pax.time
                     paxWaited += 1.0
         printKeepStats("average waiting passengers on route %(route)s %(mean)0.4f" % \
-                       {'route': route.number, 'mean': (timePaxWaitsOnRoute/paxWaited) if paxWaited != 0 else 0})
+                       {'route': route.number, 'mean': ((timePaxWaitsOnRoute/paxWaited) if paxWaited != 0 else 0)})
         overall['timePaxWaits'] += timePaxWaitsOnRoute
         overall['paxWaited'] += paxWaited
         
-    printKeepStats("average waiting passengers %0.4f" % (overall['timePaxWaits']/overall['paxWaited']) if overall['paxWaited'] != 0 else 0)
+    printKeepStats("average waiting passengers %0.4f" % ((overall['timePaxWaits']/overall['paxWaited']) if overall['paxWaited'] != 0 else 0))
            
     return stats

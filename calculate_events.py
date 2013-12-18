@@ -14,7 +14,7 @@ def canBoardBus(state):
         if topBus != 'None':
             if topBus.capacity > len(topBus.passengers):
                 for pax in stop.passengers:
-                    if topBus.id.split('.')[0] in pax.bus:
+                    if topBus.routeNr in pax.bus:
                         events.append((boardingRate, ['boards', pax, topBus.id, stop]))
     return events
 
@@ -57,7 +57,7 @@ def canLeaveStop(state):
     
     def noPaxToBoard(bus, stop):
         for pax in stop.passengers:
-            if bus.id.split('.')[0] in pax.bus:
+            if bus.routeNr in pax.bus:
                 return False
         return True
     

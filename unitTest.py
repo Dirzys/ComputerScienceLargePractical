@@ -47,12 +47,12 @@ class TestCanBoardBus(unittest.TestCase):
         """ Test canBoardBus function if it returns correct results """
         
         paxs = [Passenger('2', ['1', '2'], 0.1), Passenger('3', ['2', '3'], 0.1)]
-        bus1 = Bus('2.0', '', [], 10)
-        bus2 = Bus('1.1', '', [], 10)
+        bus1 = Bus('2.0', '2', '', [], 10)
+        bus2 = Bus('1.1', '1', '', [], 10)
         stop = Stop('1', deque([bus1, bus2]), paxs)
         paxs2 = [Passenger('3', ['1', '2'], 0.1), Passenger('1', ['2', '3'], 0.1)]
-        bus1b = Bus('1.2', '', [], 10)
-        bus2b = Bus('2.3', '', [], 10)
+        bus1b = Bus('1.2', '1', '', [], 10)
+        bus2b = Bus('2.3', '2', '', [], 10)
         stop2 = Stop('2', deque([bus1b, bus2b]), paxs2)
         
         state = State([], [], [], [stop, stop2], 1.0, 0, 0, 0, 0, False, False)
@@ -60,7 +60,7 @@ class TestCanBoardBus(unittest.TestCase):
         results = canBoardBus(state)
     
         for event in results:
-            self.failUnless(event[1][3].top_bus().id.split('.')[0] in event[1][1].bus, 'Bus the passenger is looking for is not at the top of the queue: %s' % event[1][3].top_bus().id)
+            self.failUnless(event[1][3].top_bus().routeNr in event[1][1].bus, 'Bus the passenger is looking for is not at the top of the queue: %s' % event[1][3].top_bus().id)
 
 class TestCanDisembarkBus(unittest.TestCase):
 
@@ -69,8 +69,8 @@ class TestCanDisembarkBus(unittest.TestCase):
         
         paxs = [Passenger('2', '2.0', 0.1), Passenger('3', '2.0', 0.1)]
         paxs2 = [Passenger('3', '1.1', 0.1), Passenger('2', '1.1', 0.1)]
-        bus1 = Bus('2.0', '', paxs, 10)
-        bus2 = Bus('1.1', '', paxs2, 10)
+        bus1 = Bus('2.0', '2', '', paxs, 10)
+        bus2 = Bus('1.1', '1', '', paxs2, 10)
         stop = Stop('2', deque([bus1, bus2]), [])
         
         state = State([], [], [], [stop], 0, 1.0, 0, 0, 0, False, False)
@@ -90,8 +90,8 @@ class TestCanComeToStop(unittest.TestCase):
         
         road1 = Road('1', '2', 1.0)
         stop = Stop('2', deque([]), 2.0)
-        bus1 = Bus('2.0', road1, [], 10)
-        bus2 = Bus('1.1', stop, [], 10)
+        bus1 = Bus('2.0', '2', road1, [], 10)
+        bus2 = Bus('1.1', '1', stop, [], 10)
         
         state = State([], [], [bus1, bus2], [], 0, 0, 0, 0, 0, False, False)
         
@@ -107,8 +107,8 @@ class TestCanLeaveStop(unittest.TestCase):
         
         paxs = [Passenger('3', '2.0', 0.1), Passenger('3', '2.0', 0.1)]
         paxs2 = [Passenger('3', '1.1', 0.1), Passenger('2', '1.1', 0.1)]
-        bus1 = Bus('2.0', '2', paxs, 2)
-        bus2 = Bus('1.1', '2', paxs2, 10)
+        bus1 = Bus('2.0', '2', '2', paxs, 2)
+        bus2 = Bus('1.1', '1', '2', paxs2, 10)
         stop = Stop('2', deque([bus1, bus2]), [Passenger('5', ['2'], 0.1)])
         
         state = State([], [], [bus1, bus2], [stop], 0, 0, 1.0, 0, 0, False, False)
@@ -156,9 +156,9 @@ class TestCreateExperimentsState(unittest.TestCase):
                 buses[route.number] = 0
             buses2 = deepcopy(buses)
             for bus in state.buses:
-                buses[bus.id.split('.')[0]] += 1
+                buses[bus.routeNr] += 1
             for bus in firstState.buses:
-                buses2[bus.id.split('.')[0]] += 1
+                buses2[bus.routeNr] += 1
                 
             self.failUnless(buses == buses2, 'The number of buses in states are not the same: %(one)s and  %(two)s' % {'one':buses, 'two':buses2})
                 

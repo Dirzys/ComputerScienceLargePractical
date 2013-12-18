@@ -87,7 +87,7 @@ def get_stats(state, keepStats):
         paxWaited = float(route.paxWaited)
         #Also considering passengers that were waiting on the route until the end of simulation
         for bus in state.buses:
-            if bus.id.split('.')[0] == route.number:
+            if bus.routeNr == route.number:
                 for pax in bus.passengers:
                     timePaxWaitsOnRoute += pax.time
                     paxWaited += 1.0

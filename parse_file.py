@@ -7,7 +7,7 @@ def addBusesToNetwork(busNumber, busCount, stops, state, capacity):
     ''' Adds all buses for some specific route (specified bu busNumber) in to
         the network (state) '''
     for i in range(0, int(busCount)):
-        state.add_bus(Bus(busNumber + '.' + str(i), stops[i % len(stops)], [], capacity))
+        state.add_bus(Bus(busNumber + '.' + str(i), busNumber, stops[i % len(stops)], [], capacity))
     return state
         
 def addStopToNetwork(stopId, state):
@@ -104,7 +104,7 @@ def modifyState(state, change):
         #Removing all buses from route change[1]
         remove = []
         for bus in state.buses:
-            if bus.id.split('.')[0] == change[1]:
+            if bus.routeNr == change[1]:
                 capacity = bus.capacity #Saving the capacity
                 remove.append(bus)
         for bus in remove:
@@ -119,7 +119,7 @@ def modifyState(state, change):
         state = addBusesToNetwork(change[1], change[2], stops, state, capacity)
     if change[0] == 'capacity':
         for bus in state.buses:
-            if bus.id.split('.')[0] == change[1]:
+            if bus.routeNr == change[1]:
                 bus.change_capacity(change[2])
         for route in state.routes:
             if route.number == change[1]:

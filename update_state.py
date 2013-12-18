@@ -62,7 +62,7 @@ def modify_state(state, event, time, listEvents):
     def disembarksBus(pax, bus, stop):
         #Find route object for this bus
         for route in state.routes:
-            if route.number == bus.id.split('.')[0]:
+            if route.number == bus.routeNr:
                 chooseRoute = route
         #Remove passenger from the bus
         for possibleBus in state.buses:
@@ -87,7 +87,7 @@ def modify_state(state, event, time, listEvents):
         stopId = bus.state
         #Find next stop
         for route in state.routes:
-            if route.number == bus.id.split('.')[0]:
+            if route.number == bus.routeNr:
                 chooseRoute = route
                 nextStopIndex = (route.stops.index(stopId) + 1) % len(route.stops)
                 nextStop = route.stops[nextStopIndex]
@@ -110,8 +110,8 @@ def modify_state(state, event, time, listEvents):
                 stop.pop_bus(bus, time)
                 #Find number of passengers unable to board this bus due to full capacity
                 for pax in stop.passengers:
-                    if bus.id.split('.')[0] in pax.bus:
-                        state.missPax(stopId, bus.id.split('.')[0])
+                    if bus.routeNr in pax.bus:
+                        state.missPax(stopId, bus.routeNr)
                 break
             
         printKeepEvent('Bus %(bus)s leaves stop %(stop)s at time %(time)0.4f' % \

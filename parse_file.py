@@ -1,7 +1,7 @@
-from objects import *
-from collections import deque
 import itertools
+from collections import deque
 from copy import deepcopy
+from objects import Bus, Stop, Route, Road, State
 
 def addBusesToNetwork(busNumber, busCount, stops, state, capacity):
     for i in range(0, int(busCount)):

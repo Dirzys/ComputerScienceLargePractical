@@ -1,4 +1,4 @@
-from objects import * 
+from objects import Road
 
 def canBoardBus(state):
     boardingRate = state.boards

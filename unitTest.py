@@ -1,11 +1,11 @@
 import unittest
-from parse_file import readFromFile, addStateForExperiment, createStatesFromExperiments
-import calculate_events
-from objects import *
-from collections import deque
 from copy import deepcopy
-from simulate import simulate, findProblems
+from collections import deque
 from random import seed
+from calculate_events import *
+from objects import Bus, Passenger, Stop, State
+from parse_file import readFromFile, addStateForExperiment, createStatesFromExperiments
+from simulate import simulate, findProblems
 from simulationTestEvents import testEvents, testStats
 
 class ReadFileTest(unittest.TestCase):
@@ -35,7 +35,7 @@ class CalculateEventsTest(unittest.TestCase):
         """ Test if calculate_events returns results in the required form """
         
         network, _ = readFromFile('inputs/testSimpleInput.dat')
-        results = calculate_events.get_possible_events(network)
+        results = get_possible_events(network)
         
         for event in results:
             self.failUnless(isinstance(event, tuple), 'Possible events must be returned as tuples, but found: %(type)s for event %(event)s' % \
@@ -57,8 +57,8 @@ class TestCanBoardBus(unittest.TestCase):
         
         state = State([], [], [], [stop, stop2], 1.0, 0, 0, 0, 0, False, False)
         
-        results = calculate_events.canBoardBus(state)
-        
+        results = canBoardBus(state)
+    
         for event in results:
             self.failUnless(event[1][3].top_bus().id.split('.')[0] in event[1][1].bus, 'Bus the passenger is looking for is not at the top of the queue: %s' % event[1][3].top_bus().id)
 
@@ -75,7 +75,7 @@ class TestCanDisembarkBus(unittest.TestCase):
         
         state = State([], [], [], [stop], 0, 1.0, 0, 0, 0, False, False)
         
-        results = calculate_events.canDisembarkBus(state)
+        results = canDisembarkBus(state)
         
         for event in results:
             self.failUnless(event[1][1] in event[1][2].passengers, 'Passenger %(pax)s is not in the bus %(bus)s, hence he cannot disembark this bus' % \
@@ -95,7 +95,7 @@ class TestCanComeToStop(unittest.TestCase):
         
         state = State([], [], [bus1, bus2], [], 0, 0, 0, 0, 0, False, False)
         
-        results = calculate_events.canComeToStop(state)
+        results = canComeToStop(state)
         
         for event in results:
             self.failUnless(isinstance(event[1][1].state, Road), 'Returned bus %s is not on any road' % event[1][1].__dict__)
@@ -113,7 +113,7 @@ class TestCanLeaveStop(unittest.TestCase):
         
         state = State([], [], [bus1, bus2], [stop], 0, 0, 1.0, 0, 0, False, False)
         
-        results = calculate_events.canLeaveStop(state)
+        results = canLeaveStop(state)
         
         for event in results:
             self.failUnless(event[1][1].capacity == len(event[1][1].passengers), 'Bus %s is not on capacity and should not leave the stop' % event[1][1].id)

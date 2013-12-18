@@ -1,10 +1,10 @@
-from parse_file import readFromFile, createStatesFromExperiments
-from update_state import modify_state
-from calculate_events import get_possible_events
-from check_state import *
 import math
 from analysis import print_stats
+from calculate_events import get_possible_events
+from check_state import findWarnings, findErrors
+from parse_file import readFromFile, createStatesFromExperiments
 from random import random, uniform
+from update_state import modify_state
 
 def weightedChoice(events, totalRate):
     ''' Randomly selecting from events list.

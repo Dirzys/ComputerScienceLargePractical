@@ -1,10 +1,10 @@
 from random import choice
-from objects import *
+from objects import Passenger
 
 def modify_state(state, event, time, listEvents):
     ''' Modify state by given event '''
     
-    eventDone = ''
+    global eventDone
     
     def printKeepEvent(event):
         if listEvents:

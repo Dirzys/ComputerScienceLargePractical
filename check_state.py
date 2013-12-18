@@ -10,6 +10,8 @@ def requiredRoads(state):
     return roads
 
 def unnecessaryRoads(state):
+    ''' Find all roads that are specified, but will never be used in the simulation, 
+        because there is no route that operates through this road and create a warning for each '''
     warnings = []
     required = requiredRoads(state)
     for road in state.roads:
@@ -19,6 +21,8 @@ def unnecessaryRoads(state):
     return warnings
 
 def necessaryRoads(state):
+    ''' Find all roads that are not specified in the input file, but are required 
+        by some route and create an error for each '''
     errors = []
     required = requiredRoads(state)
     for road in required:
@@ -28,6 +32,7 @@ def necessaryRoads(state):
     return errors
 
 def routesWithZeroCapacity(state):
+    ''' Find all routes that has zero capacity and create a warning for each '''
     warnings = []
     for route in state.routes:
         if route.capacity == 0:
@@ -35,6 +40,7 @@ def routesWithZeroCapacity(state):
     return warnings
 
 def routesWithOneStop(state):
+    ''' Find all routes that has only one stop and create an error for each '''
     errors = []
     for route in state.routes:
         if len(route.stops) == 1:
@@ -42,6 +48,8 @@ def routesWithOneStop(state):
     return errors
 
 def routesWithSameNumber(state):
+    ''' Find all routes that are specified more than once and create an error
+        for each '''
     errors = []
     for i in range(0, len(state.routes)):
         for j in range(i+1, len(state.routes)):
@@ -50,6 +58,7 @@ def routesWithSameNumber(state):
     return errors
 
 def roadsWithSameStartAndEnd(state):
+    ''' Find all roads that are specified more than once and create an error for each '''
     errors = []
     for i in range(0, len(state.roads)):
         for j in range(i+1, len(state.roads)):
@@ -59,6 +68,8 @@ def roadsWithSameStartAndEnd(state):
     return errors
 
 def deleteDuplicates(all):
+    ''' Delete duplicate problems since some of them might occur more 
+        than once (if for example three routes with same route number are specified) '''
     seen = set()
     seen_add = seen.add
     return [ x for x in all if x not in seen and not seen_add(x)]

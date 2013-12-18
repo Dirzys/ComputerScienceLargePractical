@@ -5,7 +5,7 @@ daily.
 ---HOW TO RUN SIMULATION---
 To run the simulation use: 
 
-	python main.py simpleInput.txt
+	python main.py inputs/simpleInputWithoutOptimise.dat
 	
 - where the second term specifies input file that will be used for simulation.
 

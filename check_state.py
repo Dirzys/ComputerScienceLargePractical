@@ -28,11 +28,11 @@ def necessaryRoads(state):
     return errors
 
 def routesWithOneStop(state):
-    warnings = []
+    errors = []
     for route in state.routes:
         if len(route.stops) == 1:
-            warnings.append('Warning! Route %s has only one stop' % route.number)
-    return warnings
+            errors.append('Error! Route %s has only one stop' % route.number)
+    return errors
 
 def routesWithSameNumber(state):
     errors = []
@@ -59,12 +59,12 @@ def deleteDuplicates(all):
 def findWarnings(state, experiments):
     warnings = []
     warnings.extend(unnecessaryRoads(state))
-    warnings.extend(routesWithOneStop(state))
     return deleteDuplicates(warnings)
 
 def findErrors(state, experiments):
     errors = []
     errors.extend(necessaryRoads(state))
+    errors.extend(routesWithOneStop(state))
     errors.extend(routesWithSameNumber(state))
     errors.extend(roadsWithSameStartAndEnd(state))
     return deleteDuplicates(errors)

@@ -30,9 +30,16 @@ Test contains tests for testing:
 
 ---ADDITIONAL VALIDATION---
 Warning shown:
-- if route with only one stop found
+
 
 Error shown:
+- if route with only one stop found
+
+Firstly, I was thinking that this should be a warning, however, after thinking about it more carefully I have decided
+to consider routes with only one stop as invalid since in case no other routes operates through this stop, if new
+passenger comes to this stop, he will not be able to go everywhere (destination stop cannot be the same as origin
+stop and no other options are available, because no other routes operates through this stop)
+
 - if route with same number found more than once
 - if more than one road with identical starting and ending stops found
 

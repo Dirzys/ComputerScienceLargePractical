@@ -91,7 +91,7 @@ def processLine(line, state):
     elif object == "optimise":
         state.changeOptimise(True)
     elif not (object[0] == "#" or object == "\n"):
-        raise Exception, 'incorrect input - %s' % line        
+        raise IndexError      
     return state, experiment, experimentAddi
 
 def modifyState(state, change):

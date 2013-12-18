@@ -57,7 +57,7 @@ def parseRoute(data, state):
             
     capacity, experimentCap = findExperiment(data, j+1, ["capacity", routeNr]) 
     #Finally add routes and buses to the network
-    state.add_route(Route(routeNr, stops, buses, capacity))
+    state.add_route(Route(routeNr, stops, buses, int(capacity)))
     state = addBusesToNetwork(routeNr, buses, stops, state, int(capacity))
     return state, experimentBuses, experimentCap
 

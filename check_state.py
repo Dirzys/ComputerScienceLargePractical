@@ -27,6 +27,13 @@ def necessaryRoads(state):
                             {'one': road[0], 'two': road[1]})
     return errors
 
+def routesWithZeroCapacity(state):
+    warnings = []
+    for route in state.routes:
+        if route.capacity == 0:
+            warnings.append('Warning! Route %s has 0 capacity' % route.number)
+    return warnings
+
 def routesWithOneStop(state):
     errors = []
     for route in state.routes:
@@ -59,6 +66,7 @@ def deleteDuplicates(all):
 def findWarnings(state, experiments):
     warnings = []
     warnings.extend(unnecessaryRoads(state))
+    warnings.extend(routesWithZeroCapacity(state))
     return deleteDuplicates(warnings)
 
 def findErrors(state, experiments):

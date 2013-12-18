@@ -84,7 +84,7 @@ class Route:
         self.buses = buses
         
     def changeCapacity(self, capacity):
-        self.capacity = capacity
+        self.capacity = int(capacity)
         
 class Road:
     ''' Class for all roads '''

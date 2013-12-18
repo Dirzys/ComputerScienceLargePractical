@@ -73,10 +73,10 @@ class Route:
         self.stops = stops
         self.buses = buses
         self.capacity = capacity
-        #Information about how many passengers use the route
+        #Information about how many passengers use buses of this route
         self.numOfPaxIn = 0
         self.journeysMade = 0
-        #Information about how long passengers wait at route
+        #Information about how long passengers wait at buses of this route
         self.timePaxWaitsOnRoute = 0.0
         self.paxWaited = 0
         
@@ -181,7 +181,7 @@ class Bus:
         self.state = state
         self.passengers = passengers
         self.capacity = capacity
-        #Information about how many passengers use the bus
+        #Information about how many passengers use this bus
         self.numOfPaxIn = 0
         self.journeysMade = 0
         
@@ -198,6 +198,8 @@ class Bus:
         route.paxWaited += 1
         
     def addJourney(self, route):
+        ''' Whenever bus leaves the stop (starts driving the road) 
+            it starts new journey and the statistics are captured for future analysis '''
         self.numOfPaxIn += len(self.passengers)
         self.journeysMade += 1
         route.numOfPaxIn += len(self.passengers)

@@ -30,7 +30,10 @@ Test contains tests for testing:
 
 ---ADDITIONAL VALIDATION---
 Warning shown:
+- if route with zero capacity found
 
+Since simulation can still be run, considering routes with empty capacity as a valid input, however, since it is 
+quite strange to have such a "route" showing a warning to user.
 
 Error shown:
 - if route with only one stop found

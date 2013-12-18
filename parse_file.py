@@ -4,6 +4,8 @@ from copy import deepcopy
 from objects import Bus, Stop, Route, Road, State
 
 def addBusesToNetwork(busNumber, busCount, stops, state, capacity):
+    ''' Adds all buses for some specific route (specified bu busNumber) in to
+        the network (state) '''
     for i in range(0, int(busCount)):
         state.add_bus(Bus(busNumber + '.' + str(i), stops[i % len(stops)], [], capacity))
     return state
@@ -13,6 +15,7 @@ def addStopToNetwork(stopId, state):
     return state
 
 def addBusesToStops(state):
+    ''' Used to add buses into stops initially '''
     for stop in state.stops:
         for bus in state.buses:
             if bus.state == stop.id:
@@ -34,7 +37,7 @@ def findExperiment(data, i, model):
     return rate, experiment
 
 def parseRoute(data, state):
-    ''' Parses route given the data line for route'''
+    ''' Parses route given the data line for route '''
     experimentBuses = experimentCap = None
     routeNr = data[1]
     stops = []
@@ -62,6 +65,7 @@ def parseRoute(data, state):
     return state, experimentBuses, experimentCap
 
 def processLine(line, state):
+    ''' Tries to parse the line given and add all information into the state '''
     data = line.split(" ")
     object = data[0]
     experiment = experimentAddi = None
@@ -95,6 +99,7 @@ def processLine(line, state):
     return state, experiment, experimentAddi
 
 def modifyState(state, change):
+    ''' Modifies current state with the changes given '''
     if change[0] == 'buses':
         #Removing all buses from route change[1]
         remove = []
@@ -143,6 +148,8 @@ def addStateForExperiment(experiment, state):
     return state
 
 def createStatesFromExperiments(state, experiments):
+    ''' Given state and list of experiments creates state for every
+        possible variation of experiments '''
     states = [state]
     #Now need to get all possible variations of experiments
     variations = list(itertools.product(*experiments))
@@ -153,7 +160,7 @@ def createStatesFromExperiments(state, experiments):
     return [(state, vari) for state, vari in states]
 
 def readFromFile(fileToRead):
-    ''' Parses file, finds experiments and creates states for each of the experiment '''
+    ''' Parses file and finds experiments '''
     
     try:
         file = open(fileToRead, 'r')

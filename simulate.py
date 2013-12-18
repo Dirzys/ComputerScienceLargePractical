@@ -25,14 +25,14 @@ def printExperiment(experiment):
         
 def costFunction(missed, experiment):
     ''' Calculated by multiplying the number of missed passengers
-        with the sum of each value of experiments'''
+        with the sum of each value of experiments '''
     totalChange = 0.0
     for change in experiment:
         totalChange += change[len(change)-1]
     return totalChange * missed
         
 def simulate(state, listEvents, keepEvents):
-    ''' The main simulation algorithm. Print statistics at the end'''
+    ''' The main simulation algorithm. Get statistics at the end '''
     eventsDone = []
     time = 0
     while time <= state.stopTime:
@@ -51,7 +51,8 @@ def simulate(state, listEvents, keepEvents):
         return eventsDone, stats
     
 def simulateAll(state, experiments):
-    '''Simulate only once if no experiment present, otherwise simulate every possible state '''
+    ''' Simulate only once if no experiment present, otherwise simulate every possible state.
+        If some experiment and optimise parameters present - find these optimised parameters '''
     
     states = createStatesFromExperiments(state, experiments)
     
@@ -78,7 +79,7 @@ def printProblems(problems):
         print problem
         
 def findProblems(state, experiments):
-    ''' Find errors and warnings (if not ignore warnings) in the input and print it if found some'''
+    ''' Find errors and warnings (if not ignore warnings) in the input '''
     foundProblems = False
     warnings = errors = []
     if not state.ignore:
@@ -91,6 +92,9 @@ def findProblems(state, experiments):
     return foundProblems, errors + warnings
 
 def run(fileToRead):
+    ''' Parses the input file given, finds problems in the given network
+        and if everything is ok - simulates network(s), otherwise - 
+        prints problems that were found  '''
     state, experiments = readFromFile(fileToRead)
     
     foundProblems = True

@@ -93,7 +93,10 @@ def findProblems(state, experiments):
 def run(fileToRead):
     state, experiments = readFromFile(fileToRead)
     
-    foundProblems, problems = findProblems(state, experiments)
+    foundProblems = True
+    problems = []
+    if state is not None:
+        foundProblems, problems = findProblems(state, experiments)
 
     if not foundProblems:
         simulateAll(state, experiments)

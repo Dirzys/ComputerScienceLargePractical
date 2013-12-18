@@ -159,7 +159,7 @@ def readFromFile(fileToRead):
         file = open(fileToRead, 'r')
     except IOError:
         print 'Error! No such file or directory: %s' % fileToRead
-        return
+        return None, None
     #Initialize variables
     #order routes, roads, buses, stops, passengers, boardRate, disembarkRate, busDepartRate, 
     #paxArrivalRate, stopTime, ignoreWarning, optimiseParameters
@@ -172,7 +172,7 @@ def readFromFile(fileToRead):
             state, experiment, experimentAddi = processLine(line, state)
         except IndexError as l:
             print 'Error! Incorrect input'
-            return 
+            return None, None
         if experiment:
             experiments.append(experiment)
         if experimentAddi:

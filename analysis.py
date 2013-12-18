@@ -3,6 +3,8 @@ def get_stats(state, keepStats):
     
     stats = []
     def printKeepStats(stat):
+        ''' If we asked to keep statistic then we do not print them. 
+            Used for testing purposes '''
         if keepStats:
             stats.append(stat)
         else:

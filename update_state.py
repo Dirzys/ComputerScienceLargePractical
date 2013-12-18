@@ -40,11 +40,8 @@ def modify_state(state, event, time, listEvents):
             if stop.id == originId:
                 stop.add_passengers(Passenger(destinationId, buses, time))
                 
-        event = 'A new passenger enters at stop %(origin)s with destination %(dest)s at time %(time)0.4f' % \
-                    {'origin': originId, 'dest': destinationId, 'time': time}
-        
-        printKeepEvent(event)
-        
+        printKeepEvent('A new passenger enters at stop %(origin)s with destination %(dest)s at time %(time)0.4f' % \
+                       {'origin': originId, 'dest': destinationId, 'time': time})
     
     def boardsBus(pax, busId, stop):
         #Remove passenger from the stop
@@ -59,10 +56,8 @@ def modify_state(state, event, time, listEvents):
                 updateBusInStop(bus)
                 break
         
-        event = 'Passenger boards bus %(bus)s at stop %(stop)s with destination %(dest)s at time %(time)0.4f' % \
-                    {'bus': busId, 'stop': stop.id, 'dest': pax.destination, 'time': time}
-                    
-        printKeepEvent(event)
+        printKeepEvent('Passenger boards bus %(bus)s at stop %(stop)s with destination %(dest)s at time %(time)0.4f' % \
+                       {'bus': busId, 'stop': stop.id, 'dest': pax.destination, 'time': time})
                     
     def disembarksBus(pax, bus, stop):
         #Find route object for this bus
@@ -76,10 +71,8 @@ def modify_state(state, event, time, listEvents):
                 updateBusInStop(possibleBus)
                 break
         
-        event = 'Passenger disembarks bus %(bus)s at stop %(stop)s at time %(time)0.4f' % \
-                    {'bus': bus.id, 'stop': stop.id, 'time': time}
-                    
-        printKeepEvent(event)
+        printKeepEvent('Passenger disembarks bus %(bus)s at stop %(stop)s at time %(time)0.4f' % \
+                    {'bus': bus.id, 'stop': stop.id, 'time': time})
     
     def arrivesAtStop(bus):
         #Add bus to stop given by the road destination
@@ -87,10 +80,8 @@ def modify_state(state, event, time, listEvents):
         bus.state = stopId
         updateBusInStop(bus)
         
-        event = 'Bus %(bus)s arrives at stop %(stop)s at time %(time)0.4f' % \
-                    {'bus': bus.id, 'stop': stopId, 'time': time}
-                    
-        printKeepEvent(event)
+        printKeepEvent('Bus %(bus)s arrives at stop %(stop)s at time %(time)0.4f' % \
+                       {'bus': bus.id, 'stop': stopId, 'time': time})
         
     def leavesStop(bus):
         stopId = bus.state
@@ -123,10 +114,8 @@ def modify_state(state, event, time, listEvents):
                         state.missPax(stopId, bus.id.split('.')[0])
                 break
             
-        event = 'Bus %(bus)s leaves stop %(stop)s at time %(time)0.4f' % \
-                    {'bus': bus.id, 'stop': stopId, 'time': time}
-                    
-        printKeepEvent(event)
+        printKeepEvent('Bus %(bus)s leaves stop %(stop)s at time %(time)0.4f' % \
+                       {'bus': bus.id, 'stop': stopId, 'time': time})
         
     type = event[0]
     if type == 'newpax':

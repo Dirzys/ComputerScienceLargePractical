@@ -50,4 +50,25 @@ I was thinking about showing warning if two identical routes/roads have been fou
 consider this as an error since the original simulation would have two identical routes/roads that might be mixed 
 up by the simulation (unless, of course, we are removing these identical instances from our state)
 
+---CODE OPTIMISATION---
+
+From the beginning I have tried to write my code as efficient as possible. When I was designing my simulator I
+decided to do as much work as possible when updating the state rather than while calculating possible events, because
+there are a lot of events that won't be picked up (actually only one will be) and that would be not efficient (hence
+only most important information that would allow to know what kind of event is possible and the rate of that event
+is calculated while everything else is done while updating the state after picking one event)
+
+At the end of implementation I have additionally used profiler with the following command:
+
+	python -m cProfile main.py *
+	
+where * means different test inputs
+
+I have found out that splitting bus id to get route number was very inefficient (even though it was using this 
+operation very often). Therefore, I have changed my code so now Bus object also keeps route number (not only bus id)
+and when looking for route number there is no need to split bus id to get it. With this change I have managed to 
+make my simulator 2 tiems faster.
+
+I have also found that remove function (for list objects, not deque) is less efficient than list comprehension, 
+hence I am using list comprehension and it made my simulator even more faster.
  

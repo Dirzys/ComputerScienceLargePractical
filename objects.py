@@ -31,7 +31,7 @@ class State:
         self.buses.append(bus)
         
     def remove_bus(self, bus):
-        self.buses.remove(bus)
+        self.buses = [busIn for busIn in self.buses if not bus.__dict__ == busIn.__dict__]
             
     def add_stop(self, stop):
         stop = stop if not stop.id in [existingStop.id for existingStop in self.stops] else []
@@ -134,7 +134,7 @@ class Stop:
         self.passengers.append(passenger)
         
     def remove_passenger(self, passenger, time):
-        self.passengers.remove(passenger)
+        self.passengers = [pax for pax in self.passengers if not passenger.__dict__ == pax.__dict__]
         #Since passenger boards the bus, it means he stopped waiting
         self.timePaxWaitsOnStop += time - passenger.time
         self.paxWaited += 1
@@ -193,7 +193,7 @@ class Bus:
         self.capacity = capacity
         
     def remove_passenger(self, passenger, time, route):
-        self.passengers.remove(passenger)
+        self.passengers = [pax for pax in self.passengers if not passenger.__dict__ == pax.__dict__]
         #Since passenger disembarks the bus, it means he stopped waiting
         route.timePaxWaitsOnRoute += time - passenger.time
         route.paxWaited += 1

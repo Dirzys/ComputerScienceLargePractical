@@ -18,6 +18,6 @@ board experiment 1.0 2.0
 disembarks 3.0
 departs 3.0
 new passengers 8.0
-stop time 1000.0
+stop time 100.0
 ignore warnings
 optimise parameters

@@ -1,5 +1,5 @@
 
-def print_stats(state, keepStats):
+def get_stats(state, keepStats):
     
     stats = []
     def printKeepStats(stat):

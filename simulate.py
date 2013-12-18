@@ -1,5 +1,5 @@
 import math
-from analysis import print_stats
+from analysis import get_stats
 from calculate_events import get_possible_events
 from check_state import findWarnings, findErrors
 from parse_file import readFromFile, createStatesFromExperiments
@@ -45,7 +45,7 @@ def simulate(state, listEvents, keepEvents):
             eventsDone.append(eventDone)
         time = time + delay
     
-    stats = print_stats(state, keepEvents)
+    stats = get_stats(state, keepEvents)
     
     if keepEvents:
         return eventsDone, stats

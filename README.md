@@ -1,8 +1,14 @@
----GENERAL INFO---
-I have written my simulation in Python. Python, because this is my favourite programming language that I am using 
+==========================
+GENERAL INFO
+==========================
+
+I have written my bus traffic simulation in Python. Python, because this is my favourite programming language that I am using 
 daily. For implementation I have used Windows OS and Eclipse Juno.
 
----HOW TO RUN SIMULATION---
+==========================
+HOW TO RUN SIMULATION
+==========================
+
 To run the simulation use: 
 
 	python main.py inputs/simpleInputWithoutOptimise.dat
@@ -12,7 +18,10 @@ To run the simulation use:
 This command will output all simulation to command line (together with statistics, optimised parameters,
 warnings or errors)
 
----HOW TO RUN TESTS---
+==========================
+HOW TO RUN TESTS
+==========================
+
 I have written some test for my simulation.
 
 To run these use:
@@ -28,7 +37,10 @@ Test contains tests for testing:
 - if file with experiments is parsed correctly and correct states are created
 - if file catches errors and warnings (valid/invalid inputs) 
 
----ADDITIONAL VALIDATION---
+==========================
+ADDITIONAL VALIDATION
+==========================
+
 Warning shown:
 - if route with zero capacity found
 
@@ -50,7 +62,9 @@ I was thinking about showing warning if two identical routes/roads have been fou
 consider this as an error since the original simulation would have two identical routes/roads that might be mixed 
 up by the simulation (unless, of course, we are removing these identical instances from our state)
 
----CODE OPTIMISATION---
+==========================
+CODE OPTIMISATION
+==========================
 
 From the beginning I have tried to write my code as efficient as possible. When I was designing my simulator I
 decided to do as much work as possible when updating the state rather than while calculating possible events, because
